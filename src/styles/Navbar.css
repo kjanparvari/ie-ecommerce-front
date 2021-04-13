@@ -1,0 +1,62 @@
+:root {
+    --firouzei: rgb(14, 186, 197)
+}
+
+.navbar {
+    height: 65px;
+    background-color: white;
+    display: -webkit-flex;
+    /*display: flex;*/
+    flex-direction: row-reverse;
+    /*justify-content: flex-start;*/
+}
+
+.nav-btn {
+    flex-basis: 120px;
+    color: dimgray;
+    background-color: white;
+    margin: auto 12px;
+    /*padding: 3px 5px;*/
+    font-size: 16px;
+    transition: transform 450ms;
+    text-decoration: none;
+}
+
+.nav-btn:hover {
+    transform: scale(1.1);
+    color: var(--firouzei);
+}
+
+.nav-logo {
+    flex-basis: 150px;
+    color: var(--firouzei);
+    background-color: white;
+    margin: auto 25px;
+    font-size: 20px;
+    text-decoration: none;
+    transition: transform 450ms;
+}
+
+.nav-logo:hover {
+    transform: scale(1.1);
+}
+
+.login-btn {
+    flex-basis: 150px;
+    color: dimgray;
+    background-color: white;
+    margin-top: auto;
+    margin-bottom: auto;
+    margin-right: auto;
+    font-size: 20px;
+    text-decoration: none;
+    border-radius: 15px;
+    border: 2px solid gold;
+    padding: 2px 3px;
+    transition: transform 450ms;
+}
+
+.login-btn:hover {
+    transform: scale(1.1);
+    background-color: gold;
+}
