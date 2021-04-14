@@ -1,3 +1,8 @@
+:root {
+    --default-font-size: 16px;
+    --default-font-family: "IRAN Sans",sans-serif;
+}
+
 .App {
     text-align: center;
     background-color: white;
@@ -12,7 +17,19 @@
 .footer {
     background-color: rgb(42, 52, 54);
     color: rgb(114, 120, 125);
-    height: 10%;
     font-size: 16px;
-    margin: auto 1px;
+    min-height: 10vh;
+    margin: auto 0 0 0;
+    max-width: 1280px;
+    width: 100%;
+    display: flex;
+    /*overflow: hidden;*/
+    position: relative;
+    bottom: 0;
+}
+
+.footer-inner {
+    flex-basis: 100%;
+    margin: auto 0;
+    height: 50%;
 }

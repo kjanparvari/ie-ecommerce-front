@@ -1,3 +1,149 @@
+
 .home-page {
-    height: 90%;
+    min-height: 89vh;
+    background-color: whitesmoke;
+    font-size: var(--default-font-size);
+    font-family: var(--default-font-family);
+}
+
+.search-section {
+    display: flex;
+    background-color: tomato;
+    flex-direction: column;
+    margin: 0;
+}
+
+.search-title {
+    color: white;
+    font-size: 48pt;
+    margin-top: 5%
+}
+
+.search-box {
+    width: 70%;
+    margin: 3% auto 0 auto;
+    text-align: center;
+    height: 50px;
+    border: none;
+    outline: none;
+    border-radius: 40px;
+}
+
+.search-btn {
+    width: 150px;
+    outline: none;
+    font-weight: bold;
+    color: black;
+    background-color: gold;
+    margin: 4% auto 2% auto;
+    padding: 10px 10px;
+    border: none;
+    border-radius: 20px;
+    text-decoration: none;
+    transition: transform 200ms;
+}
+
+.search-btn:hover {
+    transform: scale(1.02);
+    text-decoration: none;
+    color: black;
+}
+
+.clock-img {
+    width: 50%;
+    margin: auto auto 0 auto;
+}
+
+.products-section {
+    padding: 0 1.5%;
+    margin: 0;
+}
+
+.products {
+    display: flex;
+    flex-wrap: wrap;
+    flex-basis: 70%;
+}
+
+.products-panel {
+    display: flex;
+    flex-direction: row-reverse;
+    margin-top: 1%;
+}
+
+.filters {
+    display: flex;
+    flex-direction: column;
+    flex-basis: 30%;
+    min-width: 300px;
+}
+
+.filters__box {
+    background-color: white;
+    width: 100%;
+    color: dimgray;
+    border-radius: 10px;
+    margin-bottom: 5%;
+}
+
+.filters__title {
+    border-bottom: 1px solid lightgray;
+    text-align: right;
+    padding: 2% 5%;
+}
+
+.categories__form {
+    margin: 5% 2%;
+}
+
+.categories__option {
+    text-align: right;
+    margin: 4% 2%;
+}
+
+.categories__option label {
+    margin-right: 3%;
+}
+
+.price-number-range {
+    width: 60%;
+    margin: 15% auto;
+    color: black;
+}
+
+.price-slider {
+    margin-bottom: 15%;
+}
+
+.sort-box {
+    display: flex;
+    flex-direction: row-reverse;
+    background-color: white;
+    color: dimgray;
+    border-radius: 10px;
+    margin: 1.5% auto 0 auto;
+    padding: 0.5% 0;
+}
+
+.sort-btn {
+    text-decoration: none;
+    background-color: white;
+    border-radius: 20px;
+    margin-right: 2%;
+    padding: 5px 15px;
+    outline: none;
+}
+
+.sort-btn:hover {
+    color: black;
+    text-decoration: none;
+}
+
+.sort-btn--chosen {
+    background-color: var(--myblue);
+    color: white;
+}
+
+.sort-btn--chosen:hover {
+    color: white;
 }

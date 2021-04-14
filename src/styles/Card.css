@@ -1,0 +1,58 @@
+:root {
+    --myblue: rgb(0, 157, 255);
+}
+
+.card {
+    height: 300px;
+    width: 250px;
+    background-color: white;
+    margin: 0.5%;
+    border-radius: 5px;
+}
+
+.img {
+    width: 150px;
+}
+
+.name {
+    font-weight: bold;
+    font-family: "IRAN Sans", sans-serif;
+    font-size: 16px;
+    color: black;
+    display: block;
+    text-align: right;
+    margin-right: 20px;
+    margin-top: 5px;
+}
+
+.category {
+    font-weight: normal;
+    font-family: "IRAN Sans", sans-serif;
+    font-size: 16px;
+    color: gray;
+    display: block;
+    text-align: right;
+    margin-right: 20px;
+}
+
+.buy-part {
+    margin: 20px
+}
+
+.buy-btn {
+    font-size: 16px;
+    font-family: "IRAN Sans", sans-serif;
+    font-weight: normal;
+    color: white;
+    border: none;
+    outline: none;
+    background-color: var(--myblue);
+    padding: 5px 10px 5px 10px;
+    border-radius: 20px;
+}
+
+.price {
+    font-size: 16px;
+    font-family: "IRAN Sans", sans-serif;
+    float: right;
+}
