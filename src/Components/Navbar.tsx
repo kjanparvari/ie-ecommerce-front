@@ -2,32 +2,32 @@ import React from 'react';
 import '../styles/Navbar.css'
 
 const Navbar = (props: any) => {
-    const loggedIn = false;
+    const loggedIn = true;
     return (
         <nav className="navbar">
-            <button className="nav-logo">
+            <button className="navbar__log">
                 فروشگاه
             </button>
-            <button className="nav-btn">
+            <button className="navbar__btn">
                 صفحه اول
             </button>
-            <button className="nav-btn">
+            <button className="navbar__btn">
                 تماس با ما
             </button>
-            <button className="nav-btn">
+            <button className="navbar__btn">
                 پشتیبانی
             </button>
-            <button className="nav-btn">
+            <button className="navbar__btn">
                 محصولات
             </button>
             {
-                loggedIn ?
-                <button className="login-btn">
+                !loggedIn ?
+                <button className="navbar__login-btn">
                 ورود / ثبت نام
                 </button> :
-                <div className="dropdown">
-                    <button className="dropdown__btn">{"کامیار جان پروری"}</button>
-                    <div className="dropdown__content">
+                <div className="navbar__dropdown">
+                    <button className="navbar__dropdown__btn">{"کامیار جان پروری"}</button>
+                    <div className="navbar__dropdown__content">
                         <button>پروفایل</button>
                         <button>خروج از حساب</button>
                     </div>

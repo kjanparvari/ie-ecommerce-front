@@ -4,6 +4,7 @@
     background-color: whitesmoke;
     font-size: var(--default-font-size);
     font-family: var(--default-font-family);
+    padding-bottom: 10px;
 }
 
 .search-section {
@@ -15,38 +16,36 @@
 
 .search-title {
     color: white;
-    font-size: 48pt;
+    font-size: calc(var(--default-font-size) * 2);
+    /*font-size: 48pt;*/
     margin-top: 5%
 }
 
 .search-box {
     width: 70%;
-    margin: 3% auto 0 auto;
+    margin: 40px auto 0 auto;
     text-align: center;
     height: 50px;
     border: none;
     outline: none;
-    border-radius: 40px;
+    border-radius: 24px;
 }
 
 .search-btn {
-    width: 150px;
     outline: none;
-    font-weight: bold;
+    border-radius: 24px;
     color: black;
-    background-color: gold;
-    margin: 4% auto 2% auto;
-    padding: 10px 10px;
+    background-color: var(--warning);
+    margin: 35px auto 2% auto;
+    padding: 10px 20px;
     border: none;
-    border-radius: 20px;
     text-decoration: none;
     transition: transform 200ms;
 }
 
 .search-btn:hover {
-    transform: scale(1.02);
-    text-decoration: none;
-    color: black;
+    /*transform: scale(1.02);*/
+    box-shadow: 0 4px 8px 0 rgba( 255,193, 7, 0.2), 0 6px 20px 0 rgba(255,193, 7, 0.19);
 }
 
 .clock-img {
@@ -62,7 +61,7 @@
 .products {
     display: flex;
     flex-wrap: wrap;
-    flex-basis: 70%;
+    flex-basis: 75%;
 }
 
 .products-panel {
@@ -74,16 +73,19 @@
 .filters {
     display: flex;
     flex-direction: column;
-    flex-basis: 30%;
+    flex-basis: 25%;
     min-width: 300px;
+    margin-top: 0.5%;
 }
 
 .filters__box {
     background-color: white;
     width: 100%;
     color: dimgray;
+    padding: 20px;
     border-radius: 10px;
-    margin-bottom: 5%;
+    margin-bottom: 15px;
+    box-shadow:  var(--bshadow);
 }
 
 .filters__title {
@@ -94,11 +96,14 @@
 
 .categories__form {
     margin: 5% 2%;
+    max-height: 300px;
+    overflow-x:hidden;
+    overflow-y: auto;
 }
 
 .categories__option {
     text-align: right;
-    margin: 4% 2%;
+    margin: 12px 20px
 }
 
 .categories__option label {
@@ -117,14 +122,22 @@
 
 .sort-box {
     display: flex;
+    height: 50px;
     flex-direction: row-reverse;
     background-color: white;
     color: dimgray;
     border-radius: 10px;
     margin: 1.5% auto 0 auto;
-    padding: 0.5% 0;
+    padding: 8px 0;
+    box-shadow: var(--bshadow);
 }
-
+.sort-msg {
+    color: black;
+    background-color: white;
+    border-radius: 20px;
+    margin-right: 2%;
+    padding: 5px 15px;
+}
 .sort-btn {
     text-decoration: none;
     background-color: white;

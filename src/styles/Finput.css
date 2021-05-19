@@ -1,0 +1,42 @@
+.finput__container {
+    display: flex;
+    flex-direction: row-reverse;
+    justify-content: center;
+    margin: auto;
+}
+
+.finput__label {
+    background-color: var(--firouzei);
+    color: white;
+    font-size: calc(var(--default-font-size) * 0.9);
+    font-family: var(--default-font-family);
+    width: 85px;
+    padding: 10px;
+    border-radius: 0 7px 7px 0;
+}
+
+.finput__input {
+    font-size: calc(var(--default-font-size) * 0.8);
+    font-family: var(--default-font-family);
+    color: dimgray;
+    width: 300px;
+    border: none;
+    outline: none;
+    padding: 10px;
+    border-radius: 7px 0 0 7px;
+    text-align: right;
+    vertical-align: center;
+}
+
+.finput--left {
+    margin: auto 10px auto auto;
+}
+
+.finput--right {
+    margin: auto auto auto 10px;
+}
+
+.finput__input--big {
+    width: 745px;
+    resize: none;
+}

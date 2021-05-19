@@ -3,56 +3,63 @@
 }
 
 .card {
-    height: 300px;
-    width: 250px;
+    height: 350px;
+    min-width: 250px;
+    width: 30%;
     background-color: white;
-    margin: 0.5%;
+    font-family: var(--default-font-family);
+    font-size: var(--default-font-size);
+    margin: 7px;
+    padding: 20px;
     border-radius: 5px;
+    box-shadow: var(--bshadow);
 }
 
-.img {
+.card__img {
     width: 150px;
+    height: 150px;
+    margin: 0 auto;
 }
 
-.name {
+.card__name {
     font-weight: bold;
-    font-family: "IRAN Sans", sans-serif;
-    font-size: 16px;
     color: black;
     display: block;
     text-align: right;
     margin-right: 20px;
-    margin-top: 5px;
+    margin-top: 20px;
 }
 
-.category {
-    font-weight: normal;
-    font-family: "IRAN Sans", sans-serif;
-    font-size: 16px;
+.card__category {
     color: gray;
     display: block;
     text-align: right;
-    margin-right: 20px;
+    margin: 10px 20px auto auto;
 }
 
-.buy-part {
-    margin: 20px
+.card__purchase-part {
+    margin: 40px 20px 20px 20px;
+    display: flex;
+    border-top: 1px solid lightgray;
+    padding-top: 12px;
+    font-size: 13px;
 }
 
-.buy-btn {
-    font-size: 16px;
-    font-family: "IRAN Sans", sans-serif;
-    font-weight: normal;
+.card__purchase-btn {
     color: white;
     border: none;
     outline: none;
+    margin: auto auto auto 0;
     background-color: var(--myblue);
-    padding: 5px 10px 5px 10px;
+    padding: 7px 15px   ;
     border-radius: 20px;
+    box-shadow: var(--bshadow);
 }
 
-.price {
-    font-size: 16px;
-    font-family: "IRAN Sans", sans-serif;
-    float: right;
+.card__price {
+    margin: auto 0 auto auto;
+    display: flex;
+    font-size: 14px;
+    /*background-color: gold;*/
 }
+

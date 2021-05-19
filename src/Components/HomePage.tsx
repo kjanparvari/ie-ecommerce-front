@@ -3,11 +3,16 @@ import '../styles/HomePage.css'
 import {RangeSlider, InputNumber, InputGroup} from 'rsuite';
 import 'rsuite/dist/styles/rsuite-default.css'
 // import 'rsuite/dist/styles/rsuite-default-rtl.css'
+import RoundCheckBox from "./RoundCheckBox";
 import clockImg from "../img/clock.png"
 import Card from "./Card";
 
 const HomePage = (props: any) => {
     const [value, setValue] = useState([10, 50]);
+    const checkBoxes = []
+    for (let i = 0; i<5; i++){
+        checkBoxes.push(<RoundCheckBox className="categories__option" id={i}/>)
+    }
     return (
         <section className="home-page">
             <section className="search-section">
@@ -23,7 +28,7 @@ const HomePage = (props: any) => {
             </section>
             <section className="products-section">
                 <div className="sort-box">
-                    <span className="sort-btn">: مرتب سازی بر اساس</span>
+                    <span className="sort-msg">: مرتب سازی بر اساس</span>
                     <button className="sort-btn sort-btn--chosen   ">بیشترین فروش</button>
                     <button className="sort-btn">قیمت</button>
                 </div>
@@ -32,26 +37,7 @@ const HomePage = (props: any) => {
                         <div className="filters__box">
                             <div className="filters__title">دسته بندی ها</div>
                             <form className="categories__form">
-                                <div className="categories__option">
-                                    <label htmlFor="category1">دسته بندی یک</label>
-                                    <input name="category" id="category1" type="radio"/>
-                                </div>
-                                <div className="categories__option">
-                                    <label htmlFor="category2">دسته بندی دو</label>
-                                    <input name="category" id="category2" type="radio"/>
-                                </div>
-                                <div className="categories__option">
-                                    <label htmlFor="category3">دسته بندی سه</label>
-                                    <input name="category" id="category3" type="radio"/>
-                                </div>
-                                <div className="categories__option">
-                                    <label htmlFor="category4">دسته بندی چهار</label>
-                                    <input name="category" id="category4" type="radio"/>
-                                </div>
-                                <div className="categories__option">
-                                    <label htmlFor="category5">دسته بندی پنج</label>
-                                    <input name="category" id="category5" type="radio"/>
-                                </div>
+                                {checkBoxes}
                             </form>
 
                         </div>
@@ -63,7 +49,7 @@ const HomePage = (props: any) => {
                                     className="price-slider"
                                     defaultValue={[10, 50]}
                                 />
-                                <InputGroup >
+                                <InputGroup>
                                     <InputNumber
                                         min={0}
                                         max={100}

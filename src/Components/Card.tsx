@@ -5,12 +5,16 @@ import '../styles/Card.css'
 function Card(props: any) {
     return (
         <div className="card">
-            <img src={bag} className="img" alt=""/>
-            <div className="name">موس گیمیگ ریزر</div>
-            <div className="category">دسته بندی یک</div>
-            <div className="buy-part">
-                <button className="buy-btn">خرید محصول</button>
-                <span className="price">{"10.000 تومان "}</span>
+            <img src={bag} className="card__img" alt=""/>
+            <div className="card__name">موس گیمیگ ریزر</div>
+            <div className="card__category">دسته بندی یک</div>
+            <div className="card__purchase-part">
+                <button className="card__purchase-btn">خرید محصول</button>
+                <div className="card__price">
+                    <span>تومان</span>
+                    <span>10.000 </span>
+
+                </div>
             </div>
         </div>
     );

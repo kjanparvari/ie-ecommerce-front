@@ -1,23 +1,33 @@
 :root {
     --default-font-size: 16px;
-    --default-font-family: "IRAN Sans",sans-serif;
+    --default-font-family: "IRANSans",sans-serif;
+    --primary: #007bff;
+    --secondary: #6c757d;
+    --success: #28a745;
+    --info: #17a2b8;
+    --warning: #ffc107;
+    --danger: #dc3545;
+    --light: #f8f9fa;
+    --dark: #343a40;
+    --bshadow:  0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }
 
 .App {
     text-align: center;
-    background-color: white;
+    background-color: whitesmoke;
     max-width: 1280px;
-    height: 100vh;
+    min-height: 100vh;
     margin-left: auto;
     margin-right: auto;
-    font-family: "IRAN Sans",sans-serif;
-    font-size: 16px;
+    display: flex;
+    flex-direction: column;
+    font-family: var(--default-font-family);
+    font-size: var(--default-font-size);
 }
 
 .footer {
     background-color: rgb(42, 52, 54);
     color: rgb(114, 120, 125);
-    font-size: 16px;
     min-height: 10vh;
     margin: auto 0 0 0;
     max-width: 1280px;

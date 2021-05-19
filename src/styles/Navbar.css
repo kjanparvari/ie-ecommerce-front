@@ -1,6 +1,5 @@
 :root {
     --firouzei: rgb(14, 186, 197);
-
 }
 
 .navbar {
@@ -12,7 +11,7 @@
     flex-direction: row-reverse;
 }
 
-.nav-btn {
+.navbar__btn {
     flex-basis: 120px;
     color: dimgray;
     background-color: white;
@@ -20,34 +19,39 @@
     transition: transform 450ms;
     text-decoration: none;
     outline: none;
+    border: none;
+    font-size: var(--default-font-size);
+    font-family: var(--default-font-family);
     /*font-size: 16pt;*/
 }
 
-.nav-btn:hover {
-    transform: scale(1.1);
+.navbar__btn:hover {
+    /*transform: scale(1.1);*/
     color: var(--firouzei);
     text-decoration: none;
 }
 
-.nav-logo {
+.navbar__log {
     flex-basis: 150px;
     color: var(--firouzei);
     background-color: white;
     margin: auto 5px auto 12px;
     font-size: calc(var(--default-font-size) * 1.2);
+    font-family: var(--default-font-family);
     text-decoration: none;
     transition: transform 450ms;
     outline: none;
+    border: none;
     /*font-size: 20pt;*/
 }
 
-.nav-logo:hover {
-    transform: scale(1.1);
+.navbar__log:hover {
+    /*transform: scale(1.1);*/
     color: var(--firouzei);
     text-decoration: none;
 }
 
-.login-btn {
+.navbar__login-btn {
     /*flex-basis: 150px;*/
     color: dimgray;
     background-color: white;
@@ -58,16 +62,18 @@
     padding: 10px 20px;
     transition: transform 450ms;
     outline: none;
+    font-size: var(--default-font-size);
+    font-family: var(--default-font-family);
 }
 
-.login-btn:hover {
-    transform: scale(1.03);
+.navbar__login-btn:hover {
+    /*transform: scale(1.03);*/
     background-color: gold;
     text-decoration: none;
     color: black;
 }
 
-.dropdown {
+.navbar__dropdown {
     color: dimgray;
     background-color: white;
     margin: auto auto auto 0;
@@ -79,20 +85,21 @@
     transition: transform 450ms;
 }
 
-.dropdown:hover {
+.navbar__dropdown:hover {
     transform: scale(1.01);
     background-color: gold;
     text-decoration: none;
     color: black;
 }
 
-.dropdown__btn {
+.navbar__dropdown__btn {
     background-color: white;
-    font-size: 16px;
     border: none;
+    font-size: var(--default-font-size);
+    font-family: var(--default-font-family);
 }
 
-.dropdown__content {
+.navbar__dropdown__content {
     display: none;
     position: absolute;
     background-color: rgb(225, 225, 225);
@@ -100,25 +107,31 @@
     box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
     border-radius: 24px;
     z-index: 1;
+    font-size: var(--default-font-size);
+    font-family: var(--default-font-family);
 }
 
-.dropdown__content button {
+.navbar__dropdown__content button {
     color: black;
     width: 100%;
     padding: 12px 16px;
     text-decoration: none;
+    outline: none;
+    border: none;
     display: block;
+    font-size: var(--default-font-size);
+    font-family: var(--default-font-family);
 }
 
-.dropdown__content button:hover {
+.navbar__dropdown__content button:hover {
     background-color: rgb(247, 247, 247);
 }
 
-.dropdown:hover .dropdown__content {
+.navbar__dropdown:hover .navbar__dropdown__content {
     display: block;
 }
 
-.dropdown:hover .dropdown__btn {
+.navbar__dropdown:hover .navbar__dropdown__btn {
     background-color: gold;
     font-weight: bold;
 }
