@@ -17,25 +17,4 @@
 
 .login-page__form {
     margin: 30px auto;
-    display: flex;
-    flex-direction: column;
-}
-
-.login-page__form__row {
-    display: flex;
-    flex-direction: row;
-}
-
-.login-page__btn {
-    font-family: var(--default-font-family);
-    font-size: var(--default-font-size);
-    background-color: gold;
-    border: none;
-    border-radius: 24px;
-    padding: 10px 50px;
-    cursor: pointer;
-}
-
-.login-page__btn:hover {
-    box-shadow: var(--bshadow);
 }

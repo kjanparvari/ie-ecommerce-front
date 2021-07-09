@@ -4,6 +4,7 @@ import HomePage from "./Components/HomePage";
 import Navbar from "./Components/Navbar";
 import LoginPage from "./Components/LoginPage";
 import SignupPage from "./Components/SignupPage";
+import UserPage from "./Components/UserPage";
 
 const App = () => {
     return (
@@ -11,9 +12,10 @@ const App = () => {
             <header>
                 <Navbar/>
             </header>
-            {/*<HomePage/>*/}
+            <HomePage/>
             {/*<LoginPage/>*/}
-            <SignupPage/>
+            {/*<SignupPage/>*/}
+            {/*<UserPage/>*/}
             <footer className="footer">
                 <div className="footer-inner">
                     تمامی حقوق برای توسعه دهندگان محفوظ است

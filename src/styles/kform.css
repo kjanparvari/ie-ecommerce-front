@@ -1,0 +1,24 @@
+.kform {
+    display: flex;
+    flex-direction: column;
+}
+
+.kform__row {
+    display: flex;
+    flex-direction: row;
+}
+
+.kform__btn {
+    font-family: var(--default-font-family);
+    font-size: var(--default-font-size);
+    background-color: gold;
+    border: none;
+    /*width: 180px;*/
+    border-radius: 24px;
+    padding: 10px 50px;
+    cursor: pointer;
+}
+
+.kform__btn:hover {
+    box-shadow: var(--bshadow);
+}

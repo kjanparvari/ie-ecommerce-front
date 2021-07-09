@@ -1,17 +1,17 @@
 import React from 'react';
-import '../styles/Finput.css'
+import '../styles/Kinput.css'
 
-function Finput({label, style, type, left, right, big}: any) {
+function Kinput({label, style, type, left, right, big}: any) {
     return (
         <div
-            className={`finput__container ${left ? "finput--left" : right ? "finput--right" : ""}`}
+            className={`kinput__container ${left ? "kinput--left" : right ? "kinput--right" : ""}`}
             style={style}
         >
-            <div className="finput__label">{label}</div>
+            <div className="kinput__label">{label}</div>
             {
                 !big ?
                     <input
-                        className={`finput__input ${big ? "finput__input--big" : ""}`}
+                        className={`kinput__input ${big ? "kinput__input--big" : ""}`}
                         type={type === undefined ? "text" : type}
                         minLength={type === "password" ? 6 : 0}
                         placeholder={`...لطفا ${label} را وارد کنید`}
@@ -19,7 +19,7 @@ function Finput({label, style, type, left, right, big}: any) {
                     :
                     <textarea
                         name="address"
-                        className="finput__input finput__input--big"
+                        className="kinput__input kinput__input--big"
                     />
             }
 
@@ -27,4 +27,4 @@ function Finput({label, style, type, left, right, big}: any) {
     );
 }
 
-export default Finput;
+export default Kinput;

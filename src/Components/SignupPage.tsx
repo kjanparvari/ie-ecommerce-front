@@ -1,25 +1,26 @@
 import React from 'react';
-import Finput from "./Finput";
+import Kinput from "./Kinput";
 import '../styles/LoginPage.css'
+import '../styles/kform.css'
 
 function SignupPage(props:any) {
     return (
         <section className="login-page">
             <div className="login-page__title">فروشگاه - ثبت نام</div>
-            <div className="login-page__form">
-                <div className="login-page__form__row">
-                    <Finput label="نام خانوادگی" left/>
-                    <Finput label="نام" right />
+            <div className="login-page__form kform">
+                <div className="kform__row">
+                    <Kinput label="نام خانوادگی" left/>
+                    <Kinput label="نام" right />
                 </div>
-                <div className="login-page__form__row" style={{marginTop: 10}}>
-                    <Finput label="رمز عبور" type="password" left/>
-                    <Finput label="ایمیل" type="email" right />
+                <div className="kform__row" style={{marginTop: 10}}>
+                    <Kinput label="رمز عبور" type="password" left/>
+                    <Kinput label="ایمیل" type="email" right />
                 </div>
-                <div className="login-page__form__row" style={{marginTop: 10}}>
-                    <Finput label="آدرس" big/>
+                <div className="kform__row" style={{marginTop: 10}}>
+                    <Kinput label="آدرس" big/>
                 </div>
             </div>
-            <button className="login-page__btn">ثبت نام</button>
+            <button className="kform__btn">ثبت نام</button>
         </section>
     );
 }
