@@ -1,10 +1,31 @@
 .kinput__container {
     display: flex;
-    flex-direction: row-reverse;
-    justify-content: center;
-    margin: auto;
+    flex-direction: column;
 }
 
+.kinput {
+    display: flex;
+    flex-direction: row-reverse;
+    /*justify-content: center;*/
+}
+
+.kinput__error {
+    color: var(--danger);
+    /*height: 20px;*/
+    /*background-color: gold;*/
+    font-size: calc(var(--default-font-size) * (3 / 4));
+    margin: 0 auto;
+}
+
+
+.kinput--not-valid {
+    border: 2px solid var(--danger);
+    border-radius: 7px;
+}
+.kinput--valid {
+    border: 2px solid var(--success);
+    border-radius: 7px;
+}
 .kinput__label {
     background-color: var(--firouzei);
     color: white;
@@ -29,11 +50,11 @@
 }
 
 .kinput--left {
-    margin: auto 10px auto auto;
+    margin: 0 10px auto auto;
 }
 
 .kinput--right {
-    margin: auto auto auto 10px;
+    margin: 0 auto auto 10px;
 }
 
 .kinput__input--big {

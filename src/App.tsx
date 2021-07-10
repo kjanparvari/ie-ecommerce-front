@@ -12,8 +12,8 @@ const App = () => {
             <header>
                 <Navbar/>
             </header>
-            <HomePage/>
-            {/*<LoginPage/>*/}
+            {/*<HomePage/>*/}
+            <LoginPage/>
             {/*<SignupPage/>*/}
             {/*<UserPage/>*/}
             <footer className="footer">

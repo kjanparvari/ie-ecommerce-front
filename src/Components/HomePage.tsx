@@ -1,29 +1,133 @@
-import React, {useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import '../styles/HomePage.css'
 import {RangeSlider, InputNumber, InputGroup} from 'rsuite';
 import 'rsuite/dist/styles/rsuite-default.css'
 // import 'rsuite/dist/styles/rsuite-default-rtl.css'
-import RoundCheckBox from "./RoundCheckBox";
-import clockImg from "../img/clock.png"
+import KcheckBox from "./KcheckBox"
+import clockImg from "../img/hero_header/clock.png"
+import laptopImg from "../img/hero_header/laptop.png"
+import ps5Img from "../img/hero_header/ps5-controller.png"
+import smartphonesImg from "../img/hero_header/smartphones.png"
 import Card from "./Card";
+import {AiFillLeftCircle, AiFillRightCircle} from 'react-icons/ai'
 
+const heroImages = [clockImg, ps5Img, smartphonesImg]
 const HomePage = (props: any) => {
     const [value, setValue] = useState([10, 50]);
-    const checkBoxes = []
-    for (let i = 0; i<5; i++){
-        checkBoxes.push(<RoundCheckBox className="categories__option" id={i}/>)
+    const [heroImg, setHeroImg] = useState(clockImg);
+    const [timerFlag, setTimerFlag] = useState(false);
+    const [pageNumber, setPageNumber] = useState(1);
+    const [pageCapacity, setPageCapacity] = useState(15);
+    const allCards: any[] = []
+    const checkBoxes: any[] = [];
+    const nextHeroImg = () => {
+        const current_index = heroImages.indexOf(heroImg);
+        if (current_index === heroImages.length - 1) {
+            setHeroImg(heroImages[0]);
+            return;
+        } else {
+            setHeroImg(heroImages[current_index + 1]);
+            return;
+        }
     }
+    const prevHeroImg = () => {
+        const current_index = heroImages.indexOf(heroImg);
+        if (current_index === 0) {
+            setHeroImg(heroImages[heroImages.length - 1]);
+            return;
+        } else {
+            setHeroImg(heroImages[current_index - 1]);
+            return;
+        }
+    }
+    const generatePageNumbers = () => {
+        const numberOfPages = Math.ceil(allCards.length / pageCapacity);
+        console.log(`all: ${allCards.length}, cap: ${pageCapacity}, res: ${numberOfPages}`)
+        const pageNumberList: any[] = []
+        let _start: number, _end: number
+        if (pageNumber <= 3)
+            _start = 1
+        else
+            _start = pageNumber - 2
+        if (pageNumber >= Math.ceil(allCards.length / pageCapacity) - 2)
+            _end = Math.ceil(allCards.length / pageCapacity)
+        else
+            _end = pageNumber + 2
+        for (let i = _start; i <= _end; i++) {
+            if (i == pageNumber) {
+                pageNumberList.push(
+                    <div
+                        key={`pageIcon${i}`}
+                        className="pagination__number pagination__number--chosen"
+                        onClick={() => setPageNumber(i)}
+                    >
+                        {i}
+                    </div>)
+            } else {
+                pageNumberList.push(
+                    <div
+                        key={`pageIcon${i}`}
+                        className="pagination__number"
+                        onClick={() => setPageNumber(i)}
+                    >
+                        {i}
+                    </div>)
+            }
+        }
+        return pageNumberList
+    }
+    const isLastPage = () => {
+        return pageNumber === Math.ceil(allCards.length / pageCapacity);
+    }
+    const isFirstPage = () => {
+        return pageNumber === 1;
+    }
+    const generateShowingCards = () => {
+        const _start = (pageNumber - 1) * pageCapacity;
+        let _end: number;
+        if (isLastPage())
+            _end = allCards.length;
+        else
+            _end = _start + pageCapacity;
+        return allCards.slice(_start, _end);
+    }
+    const nextPage = () => {
+        if (!isLastPage())
+            setPageNumber((prevState => prevState + 1))
+    }
+    const prevPage = () => {
+        if (!isFirstPage())
+            setPageNumber((prevState => prevState - 1))
+    }
+    useEffect(() => {
+        setTimeout(() => {
+            nextHeroImg();
+            setTimerFlag(() => !timerFlag);
+        }, 10000)
+    }, [timerFlag])
+    // useEffect(() => {
+    for (let i = 0; i < 100; i++)
+        allCards.push(<Card key={`card${i}`}/>)
+    for (let i = 0; i < 5; i++)
+        checkBoxes.push(<KcheckBox className="categories__option" key={`checkBox${i}`}/>)
+    // }, [])
+
+    // @ts-ignore
     return (
         <section className="home-page">
-            <section className="search-section">
-                <div className="search-title">
+            <section className="hero-header">
+                <div className="hero-header__title">
                     ... در محصولات سایت جست و جو کنید
                 </div>
-                <input type="text" placeholder="...نام محصول خود را وارد کنید" className="search-box"/>
-                <button onClick={() => alert("clicked!")} className="search-btn">
+                <input type="text" placeholder="...نام محصول خود را وارد کنید" className="hero-header__search-box"/>
+                <button onClick={() => alert("clicked!")} className="hero-header__search-btn">
                     جست و جو کنید
                 </button>
-                <img src={clockImg} className="clock-img" alt=""/>
+                <div className="hero-header__slider-btn">
+                    <AiFillLeftCircle className="hero-header__slider__left-btn" onClick={prevHeroImg}/>
+                    <AiFillRightCircle className="hero-header__slider__right-btn" onClick={nextHeroImg}/>
+                </div>
+                <img src={heroImg} className="hero-header__img" alt=""/>
 
             </section>
             <section className="products-section">
@@ -84,20 +188,41 @@ const HomePage = (props: any) => {
 
                     </div>
                     <div className="products">
-                        <Card/>
-                        <Card/>
-                        <Card/>
-                        <Card/>
-                        <Card/>
-                        <Card/>
-                        <Card/>
-                        <Card/>
+                        {generateShowingCards()}
                     </div>
 
                 </div>
 
             </section>
+            <section className="pagination__box">
+                <div className="pagination">
+                    <button className={`pagination__btn ${isLastPage() ? "pagination__btn--disabled" : ""}`}
+                            onClick={nextPage} disabled={isLastPage()}>
+                        بعدی
+                    </button>
+                    <div className="pagination__numbers-group">
+                        {generatePageNumbers()}
+                    </div>
+                    <button className={`pagination__btn ${isFirstPage() ? "pagination__btn--disabled" : ""}`}
+                            onClick={prevPage} disabled={isFirstPage()}>
+                        قبلی
+                    </button>
+                </div>
 
+                <div className="pagination__capacity">
+                    <label htmlFor="capacity-select" className="pagination__capacity__label">تعداد محصولات در
+                        صفحه</label>
+                    <select name="capacity-select" className="pagination__capacity__select" defaultValue={15}
+                            onChange={(event) => setPageCapacity(parseInt(event.target.value))}
+                    >
+                        <option value="3">3</option>
+                        <option value="5">5</option>
+                        <option value="10">10</option>
+                        <option value="15">15</option>
+                    </select>
+                </div>
+
+            </section>
         </section>
     );
 }

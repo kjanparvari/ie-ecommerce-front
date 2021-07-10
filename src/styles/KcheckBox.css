@@ -1,7 +1,17 @@
+
+.round-checkbox__container {
+    display: flex;
+    width: 85%;
+    height: 30px;
+    margin: auto;
+    /*background-color: gold;*/
+}
+
 .round-checkbox {
     position: relative;
-    margin: auto 0 auto 10px;
+    flex-basis: 15%;
 }
+
 
 .round-checkbox label {
     background-color: #fff;
@@ -40,4 +50,9 @@
 
 .round-checkbox input[type="checkbox"]:checked + label:after {
     opacity: 1;
+}
+
+.round-checkbox__title {
+    flex-basis: 85%;
+    margin: auto;
 }

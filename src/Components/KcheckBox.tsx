@@ -1,19 +1,19 @@
 import React from 'react';
-import '../styles/RoundCheckBox.css'
+import '../styles/KcheckBox.css'
 
-function RoundCheckBox({className, style, id}: any) {
+function KcheckBox({className, style, id}: any) {
     return (
         <div className={className} style={style}>
-            <div className={"kinput__container"}>
+            <div className="round-checkbox__container">
                 <div className="round-checkbox">
                     <input type="checkbox" id={`checkbox ${id}`}/>
                     <label htmlFor={`checkbox ${id}`}/>
                 </div>
-                <div>دسته بندی یک</div>
+                <div className="round-checkbox__title">دسته بندی یک</div>
             </div>
 
         </div>
     );
 }
 
-export default RoundCheckBox;
+export default KcheckBox;

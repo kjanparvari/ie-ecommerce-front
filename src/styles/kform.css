@@ -6,6 +6,9 @@
 .kform__row {
     display: flex;
     flex-direction: row;
+    justify-content: center;
+    /*margin: 0 auto auto auto;*/
+    /*background-color: gold;*/
 }
 
 .kform__btn {
