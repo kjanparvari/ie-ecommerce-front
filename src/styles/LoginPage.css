@@ -6,8 +6,11 @@
 .login-page {
     width: 100%;
     margin: auto;
+    display: flex;
+    flex-direction: column;
     font-family: var(--default-font-family);
     font-size: var(--default-font-size);
+    /*background-color: gold;*/
 }
 
 .login-page__title {

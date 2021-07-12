@@ -24,7 +24,7 @@
     font-family: var(--default-font-family);
     font-size: calc(var(--default-font-size) * 0.8);
     font-weight: normal;
-    margin: auto 0 auto 0;
+    margin: auto 0;
 }
 
 .user-page__title__balance-btn {
@@ -45,16 +45,10 @@
     margin-top: 30px;
 }
 
-.user-page__form {
-    margin: 30px auto;
-}
-
-.user-page__table {
-    border-radius: 15px;
-}
-
-.user-page__table__container {
-    width: 80%;
-    margin: 20px auto;
-    border-radius: 50px;
+.user-page__profile {
+    margin: 0 auto;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    /*background-color: gold;*/
 }

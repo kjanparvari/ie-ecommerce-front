@@ -15,10 +15,12 @@
     font-family: var(--default-font-family);
     font-size: var(--default-font-size);
     background-color: gold;
+    width: 200px;
+    margin: auto;
     border: none;
     /*width: 180px;*/
     border-radius: 24px;
-    padding: 10px 50px;
+    padding: 10px 35px;
     cursor: pointer;
 }
 

@@ -5,6 +5,7 @@ import Navbar from "./Components/Navbar";
 import LoginPage from "./Components/LoginPage";
 import SignupPage from "./Components/SignupPage";
 import UserPage from "./Components/UserPage";
+import AdminPage from "./Components/AdminPage";
 
 const App = () => {
     return (
@@ -12,10 +13,11 @@ const App = () => {
             <header>
                 <Navbar/>
             </header>
-            {/*<HomePage/>*/}
-            <LoginPage/>
+            <HomePage/>
+            {/*<LoginPage/>*/}
             {/*<SignupPage/>*/}
             {/*<UserPage/>*/}
+            {/*<AdminPage/>*/}
             <footer className="footer">
                 <div className="footer-inner">
                     تمامی حقوق برای توسعه دهندگان محفوظ است

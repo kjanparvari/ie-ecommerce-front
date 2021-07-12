@@ -1,0 +1,24 @@
+
+.ktable__container {
+    width: 80%;
+    margin: 20px auto;
+    border-radius: 50px;
+    /*background-color: gold;*/
+}
+
+.ktable {
+    border-radius: 15px;
+    background-color: white;
+    width: 100%;
+    min-width: 500px;
+    min-height: 400px;
+}
+
+.ktable__headers {
+    display: flex;
+    flex-direction: row;
+}
+
+.ktable__header-cell{
+    color: dimgray;
+}

@@ -1,8 +1,7 @@
 import React, {useEffect, useRef, useState} from 'react';
 import '../styles/HomePage.css'
 import {RangeSlider, InputNumber, InputGroup} from 'rsuite';
-import 'rsuite/dist/styles/rsuite-default.css'
-// import 'rsuite/dist/styles/rsuite-default-rtl.css'
+// import 'rsuite/dist/styles/rsuite-default.css'
 import KcheckBox from "./KcheckBox"
 import clockImg from "../img/hero_header/clock.png"
 import laptopImg from "../img/hero_header/laptop.png"

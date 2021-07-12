@@ -1,12 +1,15 @@
 .kinput__container {
     display: flex;
     flex-direction: column;
+    /*height: 50px;*/
+    /*background-color: gold;*/
 }
 
 .kinput {
     display: flex;
     flex-direction: row-reverse;
-    /*justify-content: center;*/
+    /*height: 100%;*/
+    justify-content: center;
 }
 
 .kinput__error {
@@ -32,6 +35,7 @@
     font-size: calc(var(--default-font-size) * 0.9);
     font-family: var(--default-font-family);
     width: 85px;
+    /*height: 100%;*/
     padding: 10px;
     border-radius: 0 7px 7px 0;
 }
@@ -40,7 +44,9 @@
     font-size: calc(var(--default-font-size) * 0.8);
     font-family: var(--default-font-family);
     color: dimgray;
-    width: 300px;
+    min-width: 300px;
+    /*width: 60%;*/
+    /*height: 100%;*/
     border: none;
     outline: none;
     padding: 10px;
@@ -58,6 +64,6 @@
 }
 
 .kinput__input--big {
-    width: 745px;
+    min-width: 745px;
     resize: none;
 }
