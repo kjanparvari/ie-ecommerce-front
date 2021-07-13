@@ -1,24 +1,28 @@
-import React, {useEffect, useRef, useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import '../styles/HomePage.css'
-import {RangeSlider, InputNumber, InputGroup} from 'rsuite';
-// import 'rsuite/dist/styles/rsuite-default.css'
 import KcheckBox from "./KcheckBox"
 import clockImg from "../img/hero_header/clock.png"
-import laptopImg from "../img/hero_header/laptop.png"
 import ps5Img from "../img/hero_header/ps5-controller.png"
 import smartphonesImg from "../img/hero_header/smartphones.png"
 import Card from "./Card";
 import {AiFillLeftCircle, AiFillRightCircle} from 'react-icons/ai'
+import Slider from '@material-ui/core/Slider';
+
 
 const heroImages = [clockImg, ps5Img, smartphonesImg]
 const HomePage = (props: any) => {
-    const [value, setValue] = useState([10, 50]);
     const [heroImg, setHeroImg] = useState(clockImg);
     const [timerFlag, setTimerFlag] = useState(false);
     const [pageNumber, setPageNumber] = useState(1);
     const [pageCapacity, setPageCapacity] = useState(15);
     const allCards: any[] = []
     const checkBoxes: any[] = [];
+    const [sliderValue, setSliderValue] = React.useState<number[]>([20, 37]);
+
+    const handleSliderChange = (event: any, newValue: number | number[]) => {
+        setSliderValue(newValue as number[]);
+    };
+
     const nextHeroImg = () => {
         const current_index = heroImages.indexOf(heroImg);
         if (current_index === heroImages.length - 1) {
@@ -147,40 +151,21 @@ const HomePage = (props: any) => {
                         <div className="filters__box">
                             <div className="filters__title">تنظیم قیمت کالا</div>
                             <div className="price-number-range">
-                                <RangeSlider
-                                    progress
-                                    className="price-slider"
-                                    defaultValue={[10, 50]}
-                                />
-                                <InputGroup>
-                                    <InputNumber
-                                        min={0}
-                                        max={100}
-                                        value={value[0]}
-                                        onChange={nextValue => {
-                                            nextValue = parseFloat(nextValue.toString());
-                                            const [start, end] = value;
-                                            if (nextValue > end) {
-                                                return;
-                                            }
-                                            setValue([nextValue, end]);
-                                        }}
+                                <div className="price-slider">
+                                    <div className="price-slider__title">
+                                        بازه قیمت محصولات
+                                    </div>
+                                    <Slider
+                                        value={sliderValue}
+                                        onChange={handleSliderChange}
+                                        // color={"primary"}
+                                        valueLabelDisplay="auto"
+                                        aria-labelledby="range-slider"
                                     />
-                                    <InputGroup.Addon>to</InputGroup.Addon>
-                                    <InputNumber
-                                        min={0}
-                                        max={100}
-                                        value={value[1]}
-                                        onChange={nextValue => {
-                                            nextValue = parseFloat(nextValue.toString());
-                                            const [start, end] = value;
-                                            if (start > nextValue) {
-                                                return;
-                                            }
-                                            setValue([start, nextValue]);
-                                        }}
-                                    />
-                                </InputGroup>
+                                    <div className="price-slider__description">
+                                        {`از ${sliderValue[0]} تا ${sliderValue[1]}`}
+                                    </div>
+                                </div>
                             </div>
 
                         </div>

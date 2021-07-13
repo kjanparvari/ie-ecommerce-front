@@ -3,11 +3,11 @@
 }
 
 .card {
-    height: 360px;
+    max-height: 360px;
     /*min-width: 200px;*/
     /*max-width: 250px;*/
     /*width: 30%;*/
-    width: 250px;
+    width: 240px;
     background-color: white;
     font-family: var(--default-font-family);
     font-size: var(--default-font-size);

@@ -156,7 +156,24 @@
 }
 
 .price-slider {
-    margin-bottom: 15%;
+    width: 100%;
+}
+.MuiSlider-colorPrimary{
+    color: var(--primary) !important;
+}
+
+.price-slider__description {
+
+}
+.price-slider__slider {
+    color: var(--firouzei);
+}
+
+.price-slider__title {
+    font-family: var(--default-font-family);
+    font-size: calc(var(--default-font-size) * 0.85);
+    color: dimgray;
+    margin-bottom: 10%;
 }
 
 .sort-box {
@@ -220,6 +237,7 @@
     padding: 8px 0;
     box-shadow: var(--bshadow);
 }
+
 .pagination {
     flex: 0 1 auto;
     position: absolute;
@@ -230,6 +248,7 @@
     justify-content: center;
     /*background-color: gold;*/
 }
+
 .pagination__btn {
     background-color: var(--primary);
     color: white;
@@ -239,6 +258,7 @@
     border: none;
     font-family: var(--default-font-family);
 }
+
 .pagination__btn--disabled {
     background-color: var(--secondary);
 }
