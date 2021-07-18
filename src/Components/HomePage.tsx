@@ -114,7 +114,7 @@ const HomePage = (props: any) => {
     // for (let i = 0; i < 100; i++)
     //     allCards.push(<Card key={`card${i}`}/>)
     useEffect(() => {
-        axios.get("/api/products/all").then((response: any) => {
+        axios.get("/api/products?sort=price asc&minPrice=10&maxPrice=290&name=&category=دسته بندی اول&category=دسته بندی پنج").then((response: any) => {
             const newProducts: any[] = []
             for (let i = 0; i < response.data.length; i++) {
                 const {Name, Category, StockNumber, Price}: any = response.data[i]
