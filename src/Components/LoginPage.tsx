@@ -8,9 +8,10 @@ import axios, {AxiosResponse} from "axios";
 
 function LoginPage(props: any) {
     const modalRef = useRef(null);
+    const [email, setEmail] = useState("")
+    const [password, setPassword] = useState("")
     const [modalMsg, setModalMsg] = useState("");
     const [modalIcon, setModalIcon] = useState(false);
-    let validation: any = {}
     const openModal = () => {
         //@ts-ignore
         modalRef.current.style.display = "flex"
@@ -20,9 +21,7 @@ function LoginPage(props: any) {
         modalRef.current.style.display = "none"
     }
     const submitHandler = () => {
-        const email = validation.email();
-        const password = validation.password();
-        if (email && password){
+        if (email && password) {
             const info = {
                 email: email,
                 password: password
@@ -33,7 +32,7 @@ function LoginPage(props: any) {
                 setModalIcon(response.status === 200);
                 openModal();
             }).catch(error => {
-                if (error.response){
+                if (error.response) {
                     console.log(error.response);
                     setModalMsg(error.response.data);
                     setModalIcon(error.response.status === 200);
@@ -53,10 +52,12 @@ function LoginPage(props: any) {
             <div className="login-page__title">فروشگاه - ورود</div>
             <form className="login-page__form kform">
                 <div className="kform__row">
-                    <Kinput label="ایمیل" type="email" validation={validation} login/>
+                    <Kinput label="ایمیل" type="email" error={""} valid={0}
+                            onChange={(e: any) => setEmail(e.target.value.trim())} login/>
                 </div>
                 <div className="kform__row">
-                    <Kinput label="رمز عبور" type="password" validation={validation} style={{marginTop: 10}} login/>
+                    <Kinput label="رمز عبور" type="password" error={""} valid={0}
+                            onChange={(e: any) => setPassword(e.target.value)} style={{marginTop: 10}} login/>
                 </div>
 
             </form>
