@@ -18,7 +18,7 @@ const HomePage = (props: any) => {
     const [pageCapacity, setPageCapacity] = useState(15);
     const [checkBoxes, setCheckBoxes]: any[] = useState([])
     const [sortType, setSortType] = useState("best-selling") // best-selling, price-low, price-high
-    const allCards: any[] = []
+    const [allCards, setAllCards]: any[] = useState([])
     const [sliderValue, setSliderValue] = React.useState<number[]>([20, 37]);
 
     const handleSliderChange = (event: any, newValue: number | number[]) => {
@@ -111,9 +111,17 @@ const HomePage = (props: any) => {
         }, 10000)
     }, [timerFlag])
     // useEffect(() => {
-    for (let i = 0; i < 100; i++)
-        allCards.push(<Card key={`card${i}`}/>)
+    // for (let i = 0; i < 100; i++)
+    //     allCards.push(<Card key={`card${i}`}/>)
     useEffect(() => {
+        axios.get("/api/products/all").then((response: any) => {
+            const newProducts: any[] = []
+            for (let i = 0; i < response.data.length; i++) {
+                const {Name, Category, StockNumber, Price}: any = response.data[i]
+                newProducts.push(<Card key={`card${i}`} name={Name} category={Category} stockNumber={StockNumber} price={Price}/>)
+            }
+            setAllCards(() => newProducts)
+        })
         axios.get("/api/categories/all").then((response: any) => {
             const newCheckBoxes: any[] = []
             for (let i = 0; i < response.data.length; i++)
@@ -146,15 +154,15 @@ const HomePage = (props: any) => {
                 <div className="sort-box">
                     <span className="sort-msg">: مرتب سازی بر اساس</span>
                     <button className={`sort-btn ${sortType === "best-selling" ? "sort-btn--chosen" : ""}`}
-                            onClick={() => setSortType(()=> "best-selling")}>
+                            onClick={() => setSortType(() => "best-selling")}>
                         بیشترین فروش
                     </button>
                     <button className={`sort-btn ${sortType === "price-high" ? "sort-btn--chosen" : ""}`}
-                            onClick={() => setSortType(()=> "price-high")}>
+                            onClick={() => setSortType(() => "price-high")}>
                         گران ترین
                     </button>
                     <button className={`sort-btn ${sortType === "price-low" ? "sort-btn--chosen" : ""}`}
-                            onClick={() => setSortType(()=> "price-low")}>
+                            onClick={() => setSortType(() => "price-low")}>
                         ارزان ترین
                     </button>
                 </div>

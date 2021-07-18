@@ -2,18 +2,18 @@ import React from 'react';
 import bag from '../img/bag.png'
 import '../styles/Card.css'
 
-function Card({admin}: any) {
+function Card({admin, name, category, stockNumber, price}: any) {
     return (
         <div className="card">
             {
                 admin ?
-                    <div className="card__badge">12</div>
+                    <div className="card__badge">{stockNumber}</div>
                     : ""
             }
 
             <img src={bag} className="card__img" alt=""/>
-            <div className="card__name">موس گیمیگ ریزر</div>
-            <div className="card__category">دسته بندی یک</div>
+            <div className="card__name">{name}</div>
+            <div className="card__category">{category}</div>
             <div className="card__purchase-part">
                 {
                     admin ?
@@ -24,7 +24,7 @@ function Card({admin}: any) {
 
                 <div className="card__price">
                     <span>تومان</span>
-                    <span>10.000 </span>
+                    <span>{price}</span>
                 </div>
             </div>
 
