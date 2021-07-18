@@ -1,6 +1,7 @@
 {
   "name": "ie-project-front",
   "version": "0.1.0",
+  "proxy": "http://localhost:7000",
   "private": true,
   "dependencies": {
     "@material-ui/core": "^4.12.1",
@@ -11,10 +12,15 @@
     "@types/node": "^12.20.7",
     "@types/react": "^17.0.3",
     "@types/react-dom": "^17.0.3",
+    "@types/react-router-dom": "^5.1.8",
+    "@types/react-router-hash-link": "^2.4.1",
+    "axios": "^0.21.1",
     "formik": "^2.2.6",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "react-icons": "^4.2.0",
+    "react-router-dom": "^5.2.0",
+    "react-router-hash-link": "^2.4.3",
     "react-scripts": "4.0.3",
     "rsuite": "^4.9.3",
     "typescript": "^4.2.4",

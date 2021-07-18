@@ -63,3 +63,30 @@
     text-decoration: none;
     cursor: pointer;
 }
+
+.login-page__signup-link {
+    text-decoration: none;
+    color: dimgray;
+    margin-top: 2%;
+}
+
+.login-page__signup-link:hover {
+    color: var(--firouzei);
+}
+
+.login-page__modal__icon--success {
+    color: var(--success);
+    font-size: 60px;
+    margin: 10% auto 2% auto;
+}
+
+.login-page__modal__icon--danger {
+    color: var(--danger);
+    font-size: 60px;
+    margin: 10% auto 2% auto;
+}
+
+.login-page__modal__msg {
+    margin: 2% auto 5% auto;
+    font-size: 18px;
+}

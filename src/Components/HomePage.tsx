@@ -7,7 +7,8 @@ import smartphonesImg from "../img/hero_header/smartphones.png"
 import Card from "./Card";
 import {AiFillLeftCircle, AiFillRightCircle} from 'react-icons/ai'
 import Slider from '@material-ui/core/Slider';
-
+import {log} from "util";
+import axios, {AxiosError} from 'axios'
 
 const heroImages = [clockImg, ps5Img, smartphonesImg]
 const HomePage = (props: any) => {
@@ -15,8 +16,9 @@ const HomePage = (props: any) => {
     const [timerFlag, setTimerFlag] = useState(false);
     const [pageNumber, setPageNumber] = useState(1);
     const [pageCapacity, setPageCapacity] = useState(15);
+    const [checkBoxes, setCheckBoxes]: any[] = useState([])
+    const [sortType, setSortType] = useState("best-selling") // best-selling, price-low, price-high
     const allCards: any[] = []
-    const checkBoxes: any[] = [];
     const [sliderValue, setSliderValue] = React.useState<number[]>([20, 37]);
 
     const handleSliderChange = (event: any, newValue: number | number[]) => {
@@ -111,8 +113,15 @@ const HomePage = (props: any) => {
     // useEffect(() => {
     for (let i = 0; i < 100; i++)
         allCards.push(<Card key={`card${i}`}/>)
-    for (let i = 0; i < 5; i++)
-        checkBoxes.push(<KcheckBox className="categories__option" key={`checkBox${i}`}/>)
+    useEffect(() => {
+        axios.get("/api/categories/all").then((response: any) => {
+            const newCheckBoxes: any[] = []
+            for (let i = 0; i < response.data.length; i++)
+                newCheckBoxes.push(<KcheckBox className="categories__option" id={i} name={response.data[i]}/>)
+            setCheckBoxes(() => newCheckBoxes)
+        })
+    }, [])
+
     // }, [])
 
     // @ts-ignore
@@ -133,11 +142,21 @@ const HomePage = (props: any) => {
                 <img src={heroImg} className="hero-header__img" alt=""/>
 
             </section>
-            <section className="products-section">
+            <section id="products-section" className="products-section">
                 <div className="sort-box">
                     <span className="sort-msg">: مرتب سازی بر اساس</span>
-                    <button className="sort-btn sort-btn--chosen   ">بیشترین فروش</button>
-                    <button className="sort-btn">قیمت</button>
+                    <button className={`sort-btn ${sortType === "best-selling" ? "sort-btn--chosen" : ""}`}
+                            onClick={() => setSortType(()=> "best-selling")}>
+                        بیشترین فروش
+                    </button>
+                    <button className={`sort-btn ${sortType === "price-high" ? "sort-btn--chosen" : ""}`}
+                            onClick={() => setSortType(()=> "price-high")}>
+                        گران ترین
+                    </button>
+                    <button className={`sort-btn ${sortType === "price-low" ? "sort-btn--chosen" : ""}`}
+                            onClick={() => setSortType(()=> "price-low")}>
+                        ارزان ترین
+                    </button>
                 </div>
                 <div className="products-panel">
                     <div className="filters">

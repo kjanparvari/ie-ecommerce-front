@@ -1,10 +1,15 @@
-import React, {useEffect, useRef} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import '../styles/LoginPage.css'
 import '../styles/kform.css'
 import Kinput from "./Kinput";
+import {NavHashLink} from "react-router-hash-link";
+import {AiFillCheckCircle, AiFillCloseCircle} from "react-icons/ai";
+import axios, {AxiosResponse} from "axios";
 
 function LoginPage(props: any) {
     const modalRef = useRef(null);
+    const [modalMsg, setModalMsg] = useState("");
+    const [modalIcon, setModalIcon] = useState(false);
     let validation: any = {}
     const openModal = () => {
         //@ts-ignore
@@ -17,8 +22,25 @@ function LoginPage(props: any) {
     const submitHandler = () => {
         const email = validation.email();
         const password = validation.password();
-        if (email && password)
-            openModal();
+        if (email && password){
+            const info = {
+                email: email,
+                password: password
+            }
+            axios.post("/api/login", info).then((response: AxiosResponse) => {
+                console.log(response);
+                setModalMsg(response.data);
+                setModalIcon(response.status === 200);
+                openModal();
+            }).catch(error => {
+                if (error.response){
+                    console.log(error.response);
+                    setModalMsg(error.response.data);
+                    setModalIcon(error.response.status === 200);
+                    openModal();
+                }
+            })
+        }
     }
     useEffect(() => {
         window.onclick = (event: MouseEvent) => {
@@ -39,12 +61,17 @@ function LoginPage(props: any) {
 
             </form>
             <button className="kform__btn" onClick={submitHandler}>ورود</button>
+            <NavHashLink to="/signup" className="login-page__signup-link">
+                در فروشگاه ثبت نام کنید
+            </NavHashLink>
             <div className="login-page__modal" ref={modalRef}>
                 <div className="login-page__modal__content">
                     <span className="login-page__modal__close-btn" onClick={closeModal}>&times;</span>
-                    <p>All cockroachs rob cloudy, dead seas.</p>
-                    <br/>
-                    <br/>
+                    {
+                        modalIcon ? <AiFillCheckCircle className="login-page__modal__icon--success"/> :
+                            <AiFillCloseCircle className="login-page__modal__icon--danger"/>
+                    }
+                    <p className="login-page__modal__msg">{modalMsg}</p>
                 </div>
             </div>
         </section>

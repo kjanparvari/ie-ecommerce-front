@@ -18,6 +18,7 @@
     margin: auto 12px;
     transition: transform 450ms;
     text-decoration: none;
+    cursor: pointer;
     outline: none;
     border: none;
     font-size: var(--default-font-size);
@@ -61,6 +62,7 @@
     border: 2px solid gold;
     padding: 10px 20px;
     transition: transform 450ms;
+    cursor: pointer;
     outline: none;
     font-size: var(--default-font-size);
     font-family: var(--default-font-family);
