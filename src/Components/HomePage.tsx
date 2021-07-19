@@ -1,4 +1,4 @@
-import React, {useEffect, useRef, useState} from 'react';
+import React, {useEffect, useState, useRef} from 'react';
 import '../styles/HomePage.css'
 import KcheckBox from "./KcheckBox"
 import clockImg from "../img/hero_header/clock.png"
@@ -115,7 +115,13 @@ const HomePage = (props: any) => {
     // for (let i = 0; i < 100; i++)
     //     allCards.push(<Card key={`card${i}`}/>)
     useEffect(() => {
-        axios.get("/api/products?sort=price asc&minPrice=10&maxPrice=290&name=&category=دسته بندی اول&category=دسته بندی پنج").then((response: any) => {
+        let categories : string = ""
+        for (let i =0 ; i < catRefs.length ; i++){
+            if (catRefs[i].ref.current.value){
+                categories += "&category="+catRefs[i].name
+            }
+        }
+        axios.get("/api/products?sort=price asc&minPrice=10&maxPrice=290&name=" + categories).then((response: any) => {
             const newProducts: any[] = []
             for (let i = 0; i < response.data.length; i++) {
                 const {Name, Category, StockNumber, Price}: any = response.data[i]
