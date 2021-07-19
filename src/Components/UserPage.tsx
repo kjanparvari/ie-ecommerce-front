@@ -1,10 +1,13 @@
-import React, {useEffect, useRef, useState} from 'react';
+import React, {useContext, useEffect, useRef, useState} from 'react';
 import '../styles/UserPage.css'
 import '../styles/LoginPage.css'
 import '../styles/ktab.css'
 import '../styles/kform.css'
 import Kinput from "./Kinput";
 import Ktable from "./Ktable";
+import {Redirect} from "react-router-dom";
+import {LoginContext} from "../App";
+import {log} from "util";
 
 const sampleData = () => {
     const data = []
@@ -26,6 +29,7 @@ const sampleHeaders = {
 }
 
 function UserPage(props: any) {
+    const [loggedInUser, setLoggedInUser] = useContext(LoginContext);
     const [tab, setTab] = useState("receipt"); // profile, receipt
     const name = "کامیار"
     const price = "10.000"
@@ -54,11 +58,13 @@ function UserPage(props: any) {
                 closeModal();
         }
     }, [])
+    if (loggedInUser === null)
+        return <Redirect to="/"/>
     return (
         <section className="user-page">
             <div className="user-page__title">
-                <div className="user-page__title__welcome">{`  ${name} عزیز خوش آمدید`}</div>
-                <div className="user-page__title__balance-msg">{`موجودی حساب شما: ${price}`}</div>
+                <div className="user-page__title__welcome">{`  ${loggedInUser.firstname} عزیز خوش آمدید`}</div>
+                <div className="user-page__title__balance-msg">{`موجودی حساب شما: ${loggedInUser.balance}`}</div>
                 <button className="user-page__title__balance-btn">افزایش موجودی</button>
             </div>
             <div className="user-page__tab ktab">

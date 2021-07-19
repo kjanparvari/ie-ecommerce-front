@@ -1,11 +1,14 @@
-import React, {useEffect, useRef, useState} from 'react';
+import React, {useContext, useEffect, useRef, useState} from 'react';
 import Kinput from "./Kinput";
 import '../styles/LoginPage.css'
 import '../styles/kform.css'
 import axios, {AxiosError, AxiosResponse} from 'axios'
 import {AiFillCheckCircle, AiFillCloseCircle} from 'react-icons/ai'
+import {LoginContext} from "../App";
+import {Redirect} from 'react-router-dom'
 
 function SignupPage(props: any) {
+    const [loggedInUser, setLoggedInUser] = useContext(LoginContext);
     const modalRef = useRef(null);
     const [modalMsg, setModalMsg] = useState("");
     const [modalIcon, setModalIcon] = useState(false);
@@ -250,6 +253,12 @@ function SignupPage(props: any) {
                 setModalMsg(response.data);
                 setModalIcon(response.status === 200);
                 openModal();
+                axios.get("/api/user").then((response: AxiosResponse) => {
+                    console.log(response.data)
+                    if (response.status === 200) {
+                        setLoggedInUser(() => response.data);
+                    }
+                })
             }).catch(error => {
                 if (error.response) {
                     console.log(error.response);
@@ -266,6 +275,9 @@ function SignupPage(props: any) {
                 closeModal();
         }
     }, [])
+
+    if (loggedInUser !== null)
+        return <Redirect to="/"/>
     return (
         <section className="login-page">
             <div className="login-page__title">فروشگاه - ثبت نام</div>

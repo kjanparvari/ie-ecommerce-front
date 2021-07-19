@@ -70,6 +70,7 @@
 
 .navbar__login-btn:hover {
     /*transform: scale(1.03);*/
+    min-width: 100px;
     background-color: gold;
     text-decoration: none;
     color: black;
@@ -92,6 +93,7 @@
 
 .navbar__dropdown__btn {
     color: dimgray;
+    min-width: 180px;
     background-color: white;
     border: 2px solid gold;
     padding: 10px 20px;
@@ -121,10 +123,11 @@
     font-family: var(--default-font-family);
 }
 
-.navbar__dropdown__content button {
+.navbar__dropdown__option {
     color: black;
     /*width: 100%;*/
     background-color: rgb(225, 225, 225);
+    cursor: pointer;
     padding: 8px 16px;
     text-decoration: none;
     outline: none;
@@ -135,7 +138,7 @@
     font-family: var(--default-font-family);
 }
 
-.navbar__dropdown__content button:hover {
+.navbar__dropdown__option:hover {
     background-color: rgb(247, 247, 247);
 }
 

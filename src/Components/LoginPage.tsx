@@ -1,12 +1,15 @@
-import React, {useEffect, useRef, useState} from 'react';
+import React, {useContext, useEffect, useRef, useState} from 'react';
 import '../styles/LoginPage.css'
 import '../styles/kform.css'
 import Kinput from "./Kinput";
 import {NavHashLink} from "react-router-hash-link";
 import {AiFillCheckCircle, AiFillCloseCircle} from "react-icons/ai";
 import axios, {AxiosResponse} from "axios";
+import {LoginContext} from "../App";
+import {Redirect} from 'react-router-dom'
 
 function LoginPage(props: any) {
+    const [loggedInUser, setLoggedInUser] = useContext(LoginContext);
     const modalRef = useRef(null);
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
@@ -26,11 +29,17 @@ function LoginPage(props: any) {
                 email: email,
                 password: password
             }
-            axios.post("/api/login", info).then((response: AxiosResponse) => {
+            axios.post("/api/login", info, {withCredentials: true}).then((response: AxiosResponse) => {
                 console.log(response);
                 setModalMsg(response.data);
                 setModalIcon(response.status === 200);
                 openModal();
+                axios.get("/api/user").then((response: AxiosResponse) => {
+                    console.log(response.data)
+                    if (response.status === 200) {
+                        setLoggedInUser(() => response.data);
+                    }
+                })
             }).catch(error => {
                 if (error.response) {
                     console.log(error.response);
@@ -47,6 +56,8 @@ function LoginPage(props: any) {
                 closeModal();
         }
     }, [])
+    if (loggedInUser !== null)
+        return <Redirect to="/"/>
     return (
         <section className="login-page">
             <div className="login-page__title">فروشگاه - ورود</div>

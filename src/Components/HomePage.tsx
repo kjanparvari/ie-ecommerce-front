@@ -47,7 +47,7 @@ const HomePage = (props: any) => {
     }
     const generatePageNumbers = () => {
         const numberOfPages = Math.ceil(allCards.length / pageCapacity);
-        console.log(`all: ${allCards.length}, cap: ${pageCapacity}, res: ${numberOfPages}`)
+        // console.log(`all: ${allCards.length}, cap: ${pageCapacity}, res: ${numberOfPages}`)
         const pageNumberList: any[] = []
         let _start: number, _end: number
         if (pageNumber <= 3)

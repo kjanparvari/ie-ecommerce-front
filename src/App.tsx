@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import React, {useEffect, useState} from 'react'
 import './App.css';
 import HomePage from "./Components/HomePage";
 import Navbar from "./Components/Navbar";
@@ -11,39 +11,52 @@ import {
     Switch,
     Route
 } from "react-router-dom";
+import axios, {AxiosResponse} from "axios";
 
+export const LoginContext: any = React.createContext([null, null])
 const App = () => {
-    // const [loggedIn, setLoggedIn] = useState( false);
+    const [loggedInUser, setLoggedInUser] = useState(null);
+    useEffect(() => {
+        axios.get("/api/user").then((response: AxiosResponse) => {
+            console.log(response.data)
+            if (response.status === 200) {
+                setLoggedInUser(() => response.data);
+            }
+        })
+    }, [])
     return (
         <div className="App">
-            <Router>
-                <header>
-                    <Navbar/>
-                </header>
-                <Switch>
-                    <Route exact path="/">
-                        <HomePage/>
-                    </Route>
-                    <Route exact path="/login">
-                        <LoginPage/>
-                    </Route>
-                    <Route exact path="/signup">
-                        <SignupPage/>
-                    </Route>
-                    <Route exact path="/user">
-                        <UserPage/>
-                    </Route>
-                    <Route exact path="/admin">
-                        <AdminPage/>
-                    </Route>
-                </Switch>
-            </Router>
+            <LoginContext.Provider value={[loggedInUser, setLoggedInUser]}>
+                <Router>
+                    <header>
+                        <Navbar/>
+                    </header>
+                    <Switch>
+                        <Route exact path="/">
+                            <HomePage/>
+                        </Route>
+                        <Route exact path="/login">
+                            <LoginPage/>
+                        </Route>
+                        <Route exact path="/signup">
+                            <SignupPage/>
+                        </Route>
+                        <Route exact path="/user">
+                            <UserPage/>
+                        </Route>
+                        <Route exact path="/admin">
+                            <AdminPage/>
+                        </Route>
+                    </Switch>
+                </Router>
 
-            <footer className="footer">
-                <div className="footer-inner">
-                    تمامی حقوق برای توسعه دهندگان محفوظ است
-                </div>
-            </footer>
+                <footer className="footer">
+                    <div className="footer-inner">
+                        تمامی حقوق برای توسعه دهندگان محفوظ است
+                    </div>
+                </footer>
+            </LoginContext.Provider>
+
         </div>
     );
 }
