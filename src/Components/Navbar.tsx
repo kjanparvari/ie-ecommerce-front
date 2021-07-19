@@ -6,52 +6,58 @@ import {LoginContext} from "../App";
 import axios, {AxiosResponse} from "axios";
 
 const Navbar = (props: any) => {
-    const [loggedInUser, setLoggedInUser] = useContext(LoginContext);
-    const logout = () => {
-        axios.post("/api/logout", "", {withCredentials: true}).then((response: AxiosResponse) => {
-            if (response.status === 200) {
-                setLoggedInUser(null)
-            }
-        }).catch(error => {
-            if (error.response) {
-                console.log(error.response);
-            }
-        })
-    }
-    return (
-        <nav className="navbar">
-            <button className="navbar__log">
-                فروشگاه
-            </button>
-            <Link to="/" className="navbar__btn">
-                صفحه اول
-            </Link>
-            <Link to="/contactus" className="navbar__btn">
-                تماس با ما
-            </Link>
-            <Link to="/support" className="navbar__btn">
-                پشتیبانی
-            </Link>
-            <NavHashLink to="/#products-section" className="navbar__btn">
-                محصولات
-            </NavHashLink>
-            {
-                loggedInUser === null ?
-                    <NavHashLink to="/login" className="navbar__login-btn">
-                        ورود / ثبت نام
-                    </NavHashLink> :
-                    <div className="navbar__dropdown">
-                        <button
-                            className="navbar__dropdown__btn">{`${loggedInUser.firstname} ${loggedInUser.lastname}`}</button>
-                        <div className="navbar__dropdown__content">
-                            <NavHashLink to="/user" className="navbar__dropdown__option">پروفایل</NavHashLink>
-                            <button className="navbar__dropdown__option" onClick={logout}>خروج از حساب</button>
-                        </div>
-                    </div>
-            }
+        const [loggedInUser, setLoggedInUser, isAdmin, setIsAdmin] = useContext(LoginContext);
+        const logout = () => {
+            axios.post("/api/logout", "", {withCredentials: true}).then((response: AxiosResponse) => {
+                if (response.status === 200) {
+                    setLoggedInUser(null);
+                    setIsAdmin(false);
+                }
+            }).catch(error => {
+                if (error.response) {
+                    console.log(error.response);
+                }
+            })
+        }
+        return (
+            <nav className="navbar">
+                <button className="navbar__log">
+                    فروشگاه
+                </button>
+                <Link to="/" className="navbar__btn">
+                    صفحه اول
+                </Link>
+                <Link to="/contactus" className="navbar__btn">
+                    تماس با ما
+                </Link>
+                <Link to="/support" className="navbar__btn">
+                    پشتیبانی
+                </Link>
+                <NavHashLink to="/#products-section" className="navbar__btn">
+                    محصولات
+                </NavHashLink>
+                {
+                    loggedInUser === null ?
+                        <NavHashLink to="/login" className="navbar__login-btn">
+                            ورود / ثبت نام
+                        </NavHashLink> :
+                        <div className="navbar__dropdown">
+                            <button className="navbar__dropdown__btn">
+                                {isAdmin ? "ادمین" : `${loggedInUser.firstname} ${loggedInUser.lastname}`}
+                            </button>
+                            <div className="navbar__dropdown__content">
+                                <NavHashLink to={isAdmin ? "/admin" : "/user"} className="navbar__dropdown__option">
+                                    {isAdmin ? "پنل ادمین" : "پروفایل"}
+                                </NavHashLink>
 
-        </nav>
-    );
-};
+                                <button className="navbar__dropdown__option" onClick={logout}>خروج از حساب</button>
+                            </div>
+                        </div>
+                }
+
+            </nav>
+        );
+    }
+;
 
 export default Navbar;

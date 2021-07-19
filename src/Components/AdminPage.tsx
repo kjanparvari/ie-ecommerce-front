@@ -1,4 +1,4 @@
-import React, {useEffect, useRef, useState} from 'react';
+import React, {useContext, useEffect, useRef, useState} from 'react';
 import '../styles/LoginPage.css'
 import '../styles/AdminPage.css'
 import '../styles/ktab.css'
@@ -7,6 +7,8 @@ import '../styles/Kinput.css'
 import Ktable from "./Ktable";
 import {findAllByDisplayValue} from "@testing-library/react";
 import Card from "./Card";
+import {Redirect} from "react-router-dom";
+import {LoginContext} from "../App";
 
 const sampleData = () => {
     const data = []
@@ -37,6 +39,7 @@ const sampleCategories = [
 ]
 
 function AdminPage(props: any) {
+    const [loggedInUser, setLoggedInUser, isAdmin, setIsAdmin] = useContext(LoginContext);
     const [tab, setTab] = useState("products"); // products, categories, receipt,
     const [filteredReceipt, setFilteredReceipt] = useState(sampleData())
     const codeInputRef = useRef(null);
@@ -65,6 +68,10 @@ function AdminPage(props: any) {
             }
         })
     }
+    if (loggedInUser === null)
+        return <Redirect to="/"/>
+    else if (isAdmin === false || isAdmin === null)
+        return <Redirect to="/"/>
     return (
         <section className="admin-page">
             <div className="admin-page__title">

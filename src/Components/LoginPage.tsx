@@ -9,7 +9,7 @@ import {LoginContext} from "../App";
 import {Redirect} from 'react-router-dom'
 
 function LoginPage(props: any) {
-    const [loggedInUser, setLoggedInUser] = useContext(LoginContext);
+    const [loggedInUser, setLoggedInUser, isAdmin, setIsAdmin] = useContext(LoginContext);
     const modalRef = useRef(null);
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
@@ -37,7 +37,13 @@ function LoginPage(props: any) {
                 axios.get("/api/user").then((response: AxiosResponse) => {
                     console.log(response.data)
                     if (response.status === 200) {
-                        setLoggedInUser(() => response.data);
+                        if (Object.keys(response.data).length === 5) {
+                            setLoggedInUser(() => response.data);
+                            setIsAdmin(false);
+                        } else if (Object.keys(response.data).length === 1) {
+                            setLoggedInUser(() => response.data);
+                            setIsAdmin(true);
+                        }
                     }
                 })
             }).catch(error => {

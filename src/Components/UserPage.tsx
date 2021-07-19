@@ -29,7 +29,7 @@ const sampleHeaders = {
 }
 
 function UserPage(props: any) {
-    const [loggedInUser, setLoggedInUser] = useContext(LoginContext);
+    const [loggedInUser, setLoggedInUser, isAdmin, setIsAdmin] = useContext(LoginContext);
     const [tab, setTab] = useState("receipt"); // profile, receipt
     const name = "کامیار"
     const price = "10.000"
@@ -58,7 +58,7 @@ function UserPage(props: any) {
                 closeModal();
         }
     }, [])
-    if (loggedInUser === null)
+    if (loggedInUser === null || isAdmin === true)
         return <Redirect to="/"/>
     return (
         <section className="user-page">

@@ -13,20 +13,27 @@ import {
 } from "react-router-dom";
 import axios, {AxiosResponse} from "axios";
 
-export const LoginContext: any = React.createContext([null, null])
+export const LoginContext: any = React.createContext([null, null, null, null])
 const App = () => {
     const [loggedInUser, setLoggedInUser] = useState(null);
+    const [isAdmin, setIsAdmin] = useState(false);
     useEffect(() => {
         axios.get("/api/user").then((response: AxiosResponse) => {
             console.log(response.data)
             if (response.status === 200) {
-                setLoggedInUser(() => response.data);
+                if (Object.keys(response.data).length === 5) {
+                    setLoggedInUser(() => response.data);
+                    setIsAdmin(false);
+                } else if (Object.keys(response.data).length === 1) {
+                    setLoggedInUser(() => response.data);
+                    setIsAdmin(true);
+                }
             }
         })
     }, [])
     return (
         <div className="App">
-            <LoginContext.Provider value={[loggedInUser, setLoggedInUser]}>
+            <LoginContext.Provider value={[loggedInUser, setLoggedInUser, isAdmin, setIsAdmin]}>
                 <Router>
                     <header>
                         <Navbar/>
