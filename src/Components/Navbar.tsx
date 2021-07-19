@@ -32,7 +32,7 @@ const Navbar = (props: any) => {
             <Link to="/support" className="navbar__btn">
                 پشتیبانی
             </Link>
-            <NavHashLink to="/#production-section" className="navbar__btn">
+            <NavHashLink to="/#products-section" className="navbar__btn">
                 محصولات
             </NavHashLink>
             {
