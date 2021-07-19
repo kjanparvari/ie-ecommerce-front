@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import '../styles/HomePage.css'
 import KcheckBox from "./KcheckBox"
 import clockImg from "../img/hero_header/clock.png"
@@ -19,6 +19,7 @@ const HomePage = (props: any) => {
     const [checkBoxes, setCheckBoxes]: any[] = useState([])
     const [sortType, setSortType] = useState("best-selling") // best-selling, price-low, price-high
     const [allCards, setAllCards]: any[] = useState([])
+    const [catRefs, setCatRefs]: any[] = useState([])
     const [sliderValue, setSliderValue] = React.useState<number[]>([20, 37]);
 
     const handleSliderChange = (event: any, newValue: number | number[]) => {
@@ -124,8 +125,17 @@ const HomePage = (props: any) => {
         })
         axios.get("/api/categories/all").then((response: any) => {
             const newCheckBoxes: any[] = []
-            for (let i = 0; i < response.data.length; i++)
-                newCheckBoxes.push(<KcheckBox className="categories__option" id={i} name={response.data[i]}/>)
+            for (let i = 0; i < response.data.length; i++){
+                const _ref = useRef(null);
+                setCatRefs((prev: any[])=>{
+                    prev.push({
+                        name: response.data[i],
+                        ref : _ref
+                    })
+                });
+                newCheckBoxes.push(<KcheckBox ref={_ref} className="categories__option" id={i} name={response.data[i]}/>)
+            }
+
             setCheckBoxes(() => newCheckBoxes)
         })
     }, [])

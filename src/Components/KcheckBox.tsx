@@ -1,7 +1,7 @@
 import React, {useEffect} from 'react';
 import '../styles/KcheckBox.css'
 
-function KcheckBox({className, style, id, name}: any) {
+function KcheckBox({className, ref, style, id, name}: any) {
     useEffect(()=>{
         console.log(`checkBox:${id}`);
     }, [])
@@ -9,7 +9,7 @@ function KcheckBox({className, style, id, name}: any) {
         <div className={className} style={style}>
             <div className="round-checkbox__container">
                 <div className="round-checkbox">
-                    <input type="checkbox" id={`checkbox-input${id}`} key={`checkbox${id}`}/>
+                    <input type="checkbox" ref={ref} id={`checkbox-input${id}`} key={`checkbox${id}`}/>
                     <label htmlFor={`checkbox-input${id}`}/>
                 </div>
                 <div className="round-checkbox__title">{name}</div>
