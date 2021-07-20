@@ -1,15 +1,16 @@
 import React, {useEffect} from 'react';
 import '../styles/KcheckBox.css'
 
-function KcheckBox({className, ref, style, id, name}: any) {
-    useEffect(()=>{
+function KcheckBox({className, ref, onChange, style, id, name}: any) {
+    useEffect(() => {
         console.log(`checkBox:${id}`);
     }, [])
     return (
         <div className={className} style={style}>
             <div className="round-checkbox__container">
                 <div className="round-checkbox">
-                    <input type="checkbox" ref={ref} id={`checkbox-input${id}`} key={`checkbox${id}`}/>
+                    <input type="checkbox" ref={ref} onChange={onChange} id={`checkbox-input${id}`}
+                           key={`checkbox${id}`}/>
                     <label htmlFor={`checkbox-input${id}`}/>
                 </div>
                 <div className="round-checkbox__title">{name}</div>

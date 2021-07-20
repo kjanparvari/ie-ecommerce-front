@@ -1,4 +1,4 @@
-import React, {useEffect, useState, useRef} from 'react';
+import React, {useEffect, useState, useRef, createRef} from 'react';
 import '../styles/HomePage.css'
 import KcheckBox from "./KcheckBox"
 import clockImg from "../img/hero_header/clock.png"
@@ -25,6 +25,25 @@ const HomePage = (props: any) => {
     const handleSliderChange = (event: any, newValue: number | number[]) => {
         setSliderValue(newValue as number[]);
     };
+
+    const requestForProducts = () => {
+        let categories: string = ""
+        for (let i = 0; i < catRefs.length; i++) {
+            if (catRefs[i].ref.current.value) {
+                categories += "&category=" + catRefs[i].name
+            }
+        }
+        const [minPrice, maxPrice] = sliderValue
+        axios.get("/api/products?sort=" + sortType + "&minPrice=" + minPrice.toString() + "&maxPrice=" + maxPrice.toString() + "&name=" + categories).then((response: any) => {
+            const newProducts: any[] = []
+            for (let i = 0; i < response.data.length; i++) {
+                const {Name, Category, StockNumber, Price}: any = response.data[i]
+                newProducts.push(<Card key={`card${i}`}name={Name} category={Category} stockNumber={StockNumber}
+                                       price={Price}/>)
+            }
+            setAllCards(() => newProducts)
+        })
+    }
 
     const nextHeroImg = () => {
         const current_index = heroImages.indexOf(heroImg);
@@ -114,42 +133,27 @@ const HomePage = (props: any) => {
     // useEffect(() => {
     // for (let i = 0; i < 100; i++)
     //     allCards.push(<Card key={`card${i}`}/>)
+    // }, [])
     useEffect(() => {
-        let categories : string = ""
-        for (let i =0 ; i < catRefs.length ; i++) {
-            if (catRefs[i].ref.current.value) {
-                categories += "&category=" + catRefs[i].name
-            }
-        }
-        const [minPrice, maxPrice] = sliderValue
-        axios.get("/api/products?sort="+sortType+"&minPrice="+minPrice.toString()+"&maxPrice="+maxPrice.toString()+"&name=" + categories).then((response: any) => {
-            const newProducts: any[] = []
-            for (let i = 0; i < response.data.length; i++) {
-                const {Name, Category, StockNumber, Price}: any = response.data[i]
-                newProducts.push(<Card key={`card${i}`} name={Name} category={Category} stockNumber={StockNumber} price={Price}/>)
-            }
-            setAllCards(() => newProducts)
-        })
         axios.get("/api/categories/all").then((response: any) => {
             const newCheckBoxes: any[] = []
-            for (let i = 0; i < response.data.length; i++){
-                const _ref = useRef(null);
-                setCatRefs((prev: any[])=>{
-                    prev.push({
-                        name: response.data[i],
-                        ref : _ref
-                    })
-                });
-                newCheckBoxes.push(<KcheckBox ref={_ref} className="categories__option" id={i} name={response.data[i]}/>)
+            const refs: any[] = []
+            for (let i = 0; i < response.data.length; i++) {
+                const _ref = createRef()
+                refs.push({
+                    name: response.data[i],
+                    ref: _ref
+                })
+                newCheckBoxes.push(<KcheckBox ref={_ref} onChange={requestForProducts} className="categories__option" id={i}
+                                              name={response.data[i]}/>)
             }
-
+            setCatRefs(() => refs)
             setCheckBoxes(() => newCheckBoxes)
         })
     }, [])
-
-    // }, [])
-
-    // @ts-ignore
+    useEffect(() => {
+        requestForProducts()
+    }, [sliderValue.toString()])
     return (
         <section className="home-page">
             <section className="hero-header">
@@ -157,7 +161,7 @@ const HomePage = (props: any) => {
                     ... در محصولات سایت جست و جو کنید
                 </div>
                 <input type="text" placeholder="...نام محصول خود را وارد کنید" className="hero-header__search-box"/>
-                <button onClick={() => alert("clicked!")} className="hero-header__search-btn">
+                <button onClick={() => requestForProducts()} className="hero-header__search-btn">
                     جست و جو کنید
                 </button>
                 <div className="hero-header__slider-btn">
