@@ -1,8 +1,7 @@
 import React, {useEffect, useRef, useState} from 'react';
 import '../styles/Kinput.css'
 
-const Kinput = ({label, style, type, left, right, big, onChange, error, valid}: any) => {
-    const inputRef = useRef(null)
+const Kinput = ({label, style, inputRef, type, left, right, big, onChange, error, valid}: any) => {
 
     const getRealType = () => {
         if (["email", "password", "text", "number"].includes(type))

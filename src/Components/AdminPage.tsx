@@ -46,13 +46,18 @@ function AdminPage(props: any) {
     const [loggedInUser, setLoggedInUser, isAdmin, setIsAdmin] = useContext(LoginContext);
     const [tab, setTab] = useState("products"); // products, categories, receipt,
     const [filteredReceipt, setFilteredReceipt] = useState(sampleData())
-    const [newProductName, setNewProductName] = useState("");
-    const [newProductCategory, setNewProductCategory] = useState("");
-    const [newProductPrice, setNewProductPrice] = useState("");
-    const [newProductStock, setNewProductStock] = useState("");
+    // const [newProductName, setNewProductName] = useState("");
+    // const [newProductCategory, setNewProductCategory] = useState("");
+    // const [newProductPrice, setNewProductPrice] = useState("");
+    // const [newProductStock, setNewProductStock] = useState("");
+    const newProductNameRef: any = useRef(null);
+    const newProductCategoryRef: any = useRef(null);
+    const newProductPriceRef: any = useRef(null);
+    const newProductStockRef: any = useRef(null);
+    const [modalContent, setModalContent]: any = useState(undefined)
+    const [cards, setCards]: any = useState([])
     const codeInputRef = useRef(null);
-    const modalRef = useRef(null);
-    const allCards = [];
+    const modalRef: any = useRef(null);
     const openModal = () => {
         //@ts-ignore
         modalRef.current.style.display = "flex"
@@ -67,49 +72,106 @@ function AdminPage(props: any) {
                 closeModal();
         }
     }, [])
-    const addProductHandler = () => {
-        axios.post('/api/products/add', "", {
+    const requestForProducts = () => {
+        axios.get('/api/products', {
             params: {
-                name: newProductName,
-                price: newProductPrice,
-                category: newProductCategory,
-                stock: newProductStock
+                minPrice: 0,
+                maxPrice: 999999999,
+                sort: 'price asc',
+                name: ''
+            }
+        }).then((response: AxiosResponse) => {
+            if (response.status === 200) {
+                console.log("requesting for products")
+                console.log(response.data)
+                const newCards: any[] = []
+                for (let i = 0; i < response.data.length; i++) {
+                    let p = response.data[i]
+                    newCards.push(<Card stock={p["stock"]} name={p["name"]} category={p["category"]} price={p["price"]}
+                                        soldNumber={p["sold_number"]} key={`admin-card${i}`}
+                                        admin={isAdmin}/>)
+                }
+                setCards(() => newCards)
+
+            }
+        }).catch((response) => {
+            console.log(response.data)
+            closeModal()
+        })
+    }
+    const addProductHandler = (event: any) => {
+        // event.preventDefault()
+        console.log("making add product request")
+        const _name = newProductNameRef.current.value
+        const _cat = newProductCategoryRef.current.value
+        const _price = newProductPriceRef.current.value
+        const _stock = newProductStockRef.current.value
+        axios.post('/api/admin/products/add', "", {
+            params: {
+                name: _name,
+                price: _price,
+                category: _cat,
+                stock: _stock
             }
         }).then((response: AxiosResponse) => {
             console.log(response)
+            // setNewProductStock("")
+            // setNewProductName("")
+            // setNewProductCategory("")
+            // setNewProductPrice("")
+            requestForProducts()
+
+            newProductNameRef.current.value = ""
+            newProductCategoryRef.current.value = ""
+            newProductPriceRef.current.value = ""
+            newProductStockRef.current.value = ""
             closeModal()
         }).catch((response) => {
             console.log(response)
             closeModal()
         })
     }
+    useEffect(() => {
+        requestForProducts()
+    }, [])
     const addProductModal = <div className="kmodal__content kform">
         <span className="kmodal__close-btn" onClick={closeModal}>&times;</span>
-        <form className="kform">
+        <div className="kform">
             <div className="kform__row">
                 <Kinput label="نام محصول" type="text" error={""} valid={0}
-                        onChange={(e: any) => setNewProductName(e.target.value.trim())} login/>
+                        inputRef={newProductNameRef}
+                        onChange={(e: any) => {
+                            // setNewProductName(e.target.value)
+                        }} login/>
             </div>
             <div className="kform__row">
                 <Kinput label="قیمت محصول" type="number" error={""} valid={0}
-                        onChange={(e: any) => setNewProductPrice(e.target.value)} style={{marginTop: 10}} login/>
+                        inputRef={newProductPriceRef}
+                        onChange={(e: any) => {
+                            // setNewProductPrice(e.target.value)
+                        }} style={{marginTop: 10}} login/>
             </div>
             <div className="kform__row">
                 <Kinput label="دسته بندی" type="text" error={""} valid={0}
-                        onChange={(e: any) => setNewProductCategory(e.target.value)} style={{marginTop: 10}} login/>
+                        inputRef={newProductCategoryRef}
+                        onChange={(e: any) => {
+                            // setNewProductCategory(e.target.value)
+                        }} style={{marginTop: 10}}
+                        login/>
             </div>
             <div className="kform__row">
                 <Kinput label="موجودی" type="number" error={""} valid={0}
-                        onChange={(e: any) => setNewProductStock(e.target.value)} style={{marginTop: 10}} login/>
+                        inputRef={newProductStockRef}
+                        onChange={(e: any) => {
+                            // setNewProductStock(e.target.value)
+                        }} style={{marginTop: 10}} login/>
             </div>
 
-        </form>
-        <button className="kform__btn" onClick={addProductHandler}>افزودن محصول</button>
+        </div>
+        <button className="kform__btn" style={{marginTop: 10}} onClick={addProductHandler}>افزودن محصول</button>
     </div>
 
-    for (let i = 0; i < 100; i++)
-        allCards.push(<Card stockNumber={12} name={"موس گیمینگ ریزر"} category={"تکنولوژی"} price={100} key={`card${i}`}
-                            admin={isAdmin}/>)
+
     const filterData = () => {
         // @ts-ignore
         if (codeInputRef.current === null || codeInputRef.current.value === "")
@@ -158,9 +220,17 @@ function AdminPage(props: any) {
             {
                 tab === "products" ?
                     <div>
-                        <button className="admin-page__product__add" onClick={openModal}>افزودن محصول جدید</button>
+                        <button className="admin-page__product__add" onClick={() => {
+                            openModal()
+                            setModalContent(() => addProductModal)
+                            // setNewProductName(() => "")
+                            // setNewProductPrice(() => "")
+                            // setNewProductCategory(() => "")
+                            // setNewProductStock(() => "")
+                        }}>افزودن محصول جدید
+                        </button>
                         <div className="admin-page__cards">
-                            {allCards}
+                            {cards}
                         </div>
                     </div>
                     : tab === "receipt" ?
@@ -186,7 +256,7 @@ function AdminPage(props: any) {
                         : ""
             }
             <div className="kmodal" ref={modalRef}>
-                {addProductModal}
+                {modalContent}
             </div>
         </section>
     );

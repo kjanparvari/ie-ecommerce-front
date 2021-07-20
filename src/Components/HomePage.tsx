@@ -34,11 +34,12 @@ const HomePage = (props: any) => {
             }
         }
         const [minPrice, maxPrice] = sliderValue
+        console.log(`minPrice: ${minPrice}, maxPrice: ${maxPrice}`)
         axios.get("/api/products?sort=" + sortType + "&minPrice=" + minPrice.toString() + "&maxPrice=" + maxPrice.toString() + "&name=" + categories).then((response: any) => {
             const newProducts: any[] = []
             for (let i = 0; i < response.data.length; i++) {
                 const {Name, Category, StockNumber, Price}: any = response.data[i]
-                newProducts.push(<Card key={`card${i}`}name={Name} category={Category} stockNumber={StockNumber}
+                newProducts.push(<Card key={`card${i}`} name={Name} category={Category} stockNumber={StockNumber}
                                        price={Price}/>)
             }
             setAllCards(() => newProducts)
@@ -134,10 +135,12 @@ const HomePage = (props: any) => {
     // for (let i = 0; i < 100; i++)
     //     allCards.push(<Card key={`card${i}`}/>)
     // }, [])
+    let newCheckBoxes: any[]
+    let refs: any[]
     useEffect(() => {
         axios.get("/api/categories/all").then((response: any) => {
-            const newCheckBoxes: any[] = []
-            const refs: any[] = []
+            newCheckBoxes = []
+            refs = []
             for (let i = 0; i < response.data.length; i++) {
                 const _ref = createRef()
                 refs.push({
