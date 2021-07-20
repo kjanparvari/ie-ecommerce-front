@@ -116,12 +116,13 @@ const HomePage = (props: any) => {
     //     allCards.push(<Card key={`card${i}`}/>)
     useEffect(() => {
         let categories : string = ""
-        for (let i =0 ; i < catRefs.length ; i++){
-            if (catRefs[i].ref.current.value){
-                categories += "&category="+catRefs[i].name
+        for (let i =0 ; i < catRefs.length ; i++) {
+            if (catRefs[i].ref.current.value) {
+                categories += "&category=" + catRefs[i].name
             }
         }
-        axios.get("/api/products?sort=price asc&minPrice=10&maxPrice=290&name=" + categories).then((response: any) => {
+        const [minPrice, maxPrice] = sliderValue
+        axios.get("/api/products?sort="+sortType+"&minPrice="+minPrice.toString()+"&maxPrice="+maxPrice.toString()+"&name=" + categories).then((response: any) => {
             const newProducts: any[] = []
             for (let i = 0; i < response.data.length; i++) {
                 const {Name, Category, StockNumber, Price}: any = response.data[i]
@@ -170,15 +171,15 @@ const HomePage = (props: any) => {
                 <div className="sort-box">
                     <span className="sort-msg">: مرتب سازی بر اساس</span>
                     <button className={`sort-btn ${sortType === "best-selling" ? "sort-btn--chosen" : ""}`}
-                            onClick={() => setSortType(() => "best-selling")}>
+                            onClick={() => setSortType(() => "soldNumber desc")}>
                         بیشترین فروش
                     </button>
                     <button className={`sort-btn ${sortType === "price-high" ? "sort-btn--chosen" : ""}`}
-                            onClick={() => setSortType(() => "price-high")}>
+                            onClick={() => setSortType(() => "price desc")}>
                         گران ترین
                     </button>
                     <button className={`sort-btn ${sortType === "price-low" ? "sort-btn--chosen" : ""}`}
-                            onClick={() => setSortType(() => "price-low")}>
+                            onClick={() => setSortType(() => "price asc")}>
                         ارزان ترین
                     </button>
                 </div>
@@ -204,6 +205,7 @@ const HomePage = (props: any) => {
                                         // color={"primary"}
                                         valueLabelDisplay="auto"
                                         aria-labelledby="range-slider"
+                                        max={1000}
                                     />
                                     <div className="price-slider__description">
                                         {`از ${sliderValue[0]} تا ${sliderValue[1]}`}
