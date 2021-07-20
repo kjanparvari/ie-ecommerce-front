@@ -5,7 +5,7 @@ const Kinput = ({label, style, type, left, right, big, onChange, error, valid}: 
     const inputRef = useRef(null)
 
     const getRealType = () => {
-        if (["email", "password", "text"].includes(type))
+        if (["email", "password", "text", "number"].includes(type))
             return type;
         return "text";
     }
@@ -23,6 +23,7 @@ const Kinput = ({label, style, type, left, right, big, onChange, error, valid}: 
                             type={getRealType()}
                             minLength={type === "password" ? 6 : 0}
                             placeholder={`...لطفا ${label} را وارد کنید`}
+                            min={getRealType() === "number" ? 0 : undefined}
                             onChange={onChange}
                             // onFocus={validate}
                             // onBlur={() => setValid(0)}

@@ -1,6 +1,7 @@
 import React, {useContext, useEffect, useRef, useState} from 'react';
 import '../styles/LoginPage.css'
 import '../styles/kform.css'
+import '../styles/kmodal.css'
 import Kinput from "./Kinput";
 import {NavHashLink} from "react-router-hash-link";
 import {AiFillCheckCircle, AiFillCloseCircle} from "react-icons/ai";
@@ -82,14 +83,14 @@ function LoginPage(props: any) {
             <NavHashLink to="/signup" className="login-page__signup-link">
                 در فروشگاه ثبت نام کنید
             </NavHashLink>
-            <div className="login-page__modal" ref={modalRef}>
-                <div className="login-page__modal__content">
-                    <span className="login-page__modal__close-btn" onClick={closeModal}>&times;</span>
+            <div className="kmodal" ref={modalRef}>
+                <div className="kmodal__content">
+                    <span className="kmodal__close-btn" onClick={closeModal}>&times;</span>
                     {
-                        modalIcon ? <AiFillCheckCircle className="login-page__modal__icon--success"/> :
-                            <AiFillCloseCircle className="login-page__modal__icon--danger"/>
+                        modalIcon ? <AiFillCheckCircle className="kmodal__icon--success"/> :
+                            <AiFillCloseCircle className="kmodal__icon--danger"/>
                     }
-                    <p className="login-page__modal__msg">{modalMsg}</p>
+                    <p className="kmodal__msg">{modalMsg}</p>
                 </div>
             </div>
         </section>

@@ -4,11 +4,15 @@ import '../styles/AdminPage.css'
 import '../styles/ktab.css'
 import '../styles/kform.css'
 import '../styles/Kinput.css'
+import '../styles/kmodal.css'
 import Ktable from "./Ktable";
 import {findAllByDisplayValue} from "@testing-library/react";
 import Card from "./Card";
 import {Redirect} from "react-router-dom";
 import {LoginContext} from "../App";
+import {AiFillCheckCircle, AiFillCloseCircle} from "react-icons/ai";
+import Kinput from "./Kinput";
+import axios, {AxiosResponse} from "axios";
 
 const sampleData = () => {
     const data = []
@@ -42,10 +46,70 @@ function AdminPage(props: any) {
     const [loggedInUser, setLoggedInUser, isAdmin, setIsAdmin] = useContext(LoginContext);
     const [tab, setTab] = useState("products"); // products, categories, receipt,
     const [filteredReceipt, setFilteredReceipt] = useState(sampleData())
+    const [newProductName, setNewProductName] = useState("");
+    const [newProductCategory, setNewProductCategory] = useState("");
+    const [newProductPrice, setNewProductPrice] = useState("");
+    const [newProductStock, setNewProductStock] = useState("");
     const codeInputRef = useRef(null);
+    const modalRef = useRef(null);
     const allCards = [];
+    const openModal = () => {
+        //@ts-ignore
+        modalRef.current.style.display = "flex"
+    }
+    const closeModal = () => {
+        //@ts-ignore
+        modalRef.current.style.display = "none"
+    }
+    useEffect(() => {
+        window.onclick = (event: MouseEvent) => {
+            if (event.target == modalRef.current)
+                closeModal();
+        }
+    }, [])
+    const addProductHandler = () => {
+        axios.post('/api/products/add', "", {
+            params: {
+                name: newProductName,
+                price: newProductPrice,
+                category: newProductCategory,
+                stock: newProductStock
+            }
+        }).then((response: AxiosResponse) => {
+            console.log(response)
+            closeModal()
+        }).catch((response) => {
+            console.log(response)
+            closeModal()
+        })
+    }
+    const addProductModal = <div className="kmodal__content kform">
+        <span className="kmodal__close-btn" onClick={closeModal}>&times;</span>
+        <form className="kform">
+            <div className="kform__row">
+                <Kinput label="نام محصول" type="text" error={""} valid={0}
+                        onChange={(e: any) => setNewProductName(e.target.value.trim())} login/>
+            </div>
+            <div className="kform__row">
+                <Kinput label="قیمت محصول" type="number" error={""} valid={0}
+                        onChange={(e: any) => setNewProductPrice(e.target.value)} style={{marginTop: 10}} login/>
+            </div>
+            <div className="kform__row">
+                <Kinput label="دسته بندی" type="text" error={""} valid={0}
+                        onChange={(e: any) => setNewProductCategory(e.target.value)} style={{marginTop: 10}} login/>
+            </div>
+            <div className="kform__row">
+                <Kinput label="موجودی" type="number" error={""} valid={0}
+                        onChange={(e: any) => setNewProductStock(e.target.value)} style={{marginTop: 10}} login/>
+            </div>
+
+        </form>
+        <button className="kform__btn" onClick={addProductHandler}>افزودن محصول</button>
+    </div>
+
     for (let i = 0; i < 100; i++)
-        allCards.push(<Card key={`card${i}`} admin/>)
+        allCards.push(<Card stockNumber={12} name={"موس گیمینگ ریزر"} category={"تکنولوژی"} price={100} key={`card${i}`}
+                            admin={isAdmin}/>)
     const filterData = () => {
         // @ts-ignore
         if (codeInputRef.current === null || codeInputRef.current.value === "")
@@ -94,7 +158,7 @@ function AdminPage(props: any) {
             {
                 tab === "products" ?
                     <div>
-                        <button className="admin-page__product__add">افزودن محصول جدید</button>
+                        <button className="admin-page__product__add" onClick={openModal}>افزودن محصول جدید</button>
                         <div className="admin-page__cards">
                             {allCards}
                         </div>
@@ -121,6 +185,9 @@ function AdminPage(props: any) {
                         </div>
                         : ""
             }
+            <div className="kmodal" ref={modalRef}>
+                {addProductModal}
+            </div>
         </section>
     );
 }

@@ -2,6 +2,7 @@ import React, {useContext, useEffect, useRef, useState} from 'react';
 import Kinput from "./Kinput";
 import '../styles/LoginPage.css'
 import '../styles/kform.css'
+import '../styles/kmodal.css'
 import axios, {AxiosError, AxiosResponse} from 'axios'
 import {AiFillCheckCircle, AiFillCloseCircle} from 'react-icons/ai'
 import {LoginContext} from "../App";
@@ -316,14 +317,14 @@ function SignupPage(props: any) {
                 </div>
             </div>
             <button className="kform__btn" onClick={(event) => submitHandler(event)}>ثبت نام</button>
-            <div className="login-page__modal" ref={modalRef}>
-                <div className="login-page__modal__content">
-                    <span className="login-page__modal__close-btn" onClick={closeModal}>&times;</span>
+            <div className="kmodal" ref={modalRef}>
+                <div className="kmodal__content">
+                    <span className="kmodal__close-btn" onClick={closeModal}>&times;</span>
                     {
-                        modalIcon ? <AiFillCheckCircle className="login-page__modal__icon--success"/> :
-                            <AiFillCloseCircle className="login-page__modal__icon--danger"/>
+                        modalIcon ? <AiFillCheckCircle className="kmodal__icon--success"/> :
+                            <AiFillCloseCircle className="kmodal__icon--danger"/>
                     }
-                    <p className="login-page__modal__msg">{modalMsg}</p>
+                    <p className="kmodal__msg">{modalMsg}</p>
                 </div>
             </div>
         </section>
