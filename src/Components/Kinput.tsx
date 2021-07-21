@@ -1,7 +1,7 @@
 import React, {useEffect, useRef, useState} from 'react';
 import '../styles/Kinput.css'
 
-const Kinput = ({label, style, inputRef, type, left, right, big, onChange, error, valid}: any) => {
+const Kinput = ({label, style, inputRef, disabled, type, left, right, big, onChange, error, valid}: any) => {
 
     const getRealType = () => {
         if (["email", "password", "text", "number"].includes(type))
@@ -23,6 +23,7 @@ const Kinput = ({label, style, inputRef, type, left, right, big, onChange, error
                             minLength={type === "password" ? 6 : 0}
                             placeholder={`...لطفا ${label} را وارد کنید`}
                             min={getRealType() === "number" ? 0 : undefined}
+                            disabled={disabled}
                             onChange={onChange}
                             // onFocus={validate}
                             // onBlur={() => setValid(0)}
@@ -33,6 +34,7 @@ const Kinput = ({label, style, inputRef, type, left, right, big, onChange, error
                             name="address"
                             className="kinput__input kinput__input--big"
                             onChange={onChange}
+                            disabled={disabled}
                             // onFocus={validate}
                             // onBlur={() => setValid(0)}
                             ref={inputRef}

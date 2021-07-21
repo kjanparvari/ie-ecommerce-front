@@ -2,7 +2,7 @@ import React from 'react';
 import bag from '../img/bag.png'
 import '../styles/Card.css'
 
-function Card({admin, name, category, stock, soldNumber, price}: any) {
+function Card({admin, name, category, stock, editHandler, soldNumber, price}: any) {
     return (
         <div className="card">
             {
@@ -17,7 +17,13 @@ function Card({admin, name, category, stock, soldNumber, price}: any) {
             <div className="card__purchase-part">
                 {
                     admin ?
-                        <button className="card__purchase-btn">ویرایش محصول</button>
+                        <button className="card__purchase-btn" onClick={() => editHandler({
+                            name: name,
+                            price: price,
+                            stock: stock,
+                            soldNumber: soldNumber,
+                            category: category
+                        })}>ویرایش محصول</button>
                         :
                         <button className="card__purchase-btn">خرید محصول</button>
                 }

@@ -88,6 +88,6 @@
     display: flex;
     margin: 10px auto;
     width: 75%;
-    justify-content: space-between;
+    justify-content: flex-start;
     flex-wrap: wrap;
 }

@@ -138,7 +138,7 @@ const HomePage = (props: any) => {
     let newCheckBoxes: any[]
     let refs: any[]
     useEffect(() => {
-        axios.get("/api/categories/all").then((response: any) => {
+        axios.get("/api/categories").then((response: any) => {
             newCheckBoxes = []
             refs = []
             for (let i = 0; i < response.data.length; i++) {

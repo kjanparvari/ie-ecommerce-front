@@ -61,6 +61,7 @@
     padding: 10px 15px;
     border-radius: 20px;
     box-shadow: var(--bshadow);
+    cursor: pointer;
 }
 
 .card__price {
