@@ -1,12 +1,23 @@
-import React, {useContext, useState} from 'react';
+import React, {useContext, useEffect, useRef, useState} from 'react';
 import '../styles/Navbar.css'
+import '../styles/kform.css'
 import {Link} from "react-router-dom";
 import {HashLink, NavHashLink} from 'react-router-hash-link'
 import {LoginContext} from "../App";
 import axios, {AxiosResponse} from "axios";
+import {AiFillCheckCircle, AiFillCloseCircle} from "react-icons/ai";
 
 const Navbar = (props: any) => {
         const [loggedInUser, setLoggedInUser, isAdmin, setIsAdmin] = useContext(LoginContext);
+        const modalRef: any = useRef(null);
+        const openModal = () => {
+            //@ts-ignore
+            modalRef.current.style.display = "flex"
+        }
+        const closeModal = () => {
+            //@ts-ignore
+            modalRef.current.style.display = "none"
+        }
         const logout = () => {
             axios.post("/api/logout", "", {withCredentials: true}).then((response: AxiosResponse) => {
                 if (response.status === 200) {
@@ -19,6 +30,12 @@ const Navbar = (props: any) => {
                 }
             })
         }
+        useEffect(() => {
+            window.onclick = (event: MouseEvent) => {
+                if (event.target == modalRef.current)
+                    closeModal();
+            }
+        }, [])
         return (
             <nav className="navbar">
                 <button className="navbar__log">
@@ -50,11 +67,28 @@ const Navbar = (props: any) => {
                                     {isAdmin ? "پنل ادمین" : "پروفایل"}
                                 </NavHashLink>
 
-                                <button className="navbar__dropdown__option" onClick={logout}>خروج از حساب</button>
+                                <button className="navbar__dropdown__option" onClick={openModal}>خروج از حساب</button>
                             </div>
                         </div>
                 }
-
+                <div className="kmodal" ref={modalRef}>
+                    <div className="kmodal__content">
+                        <span className="kmodal__close-btn" onClick={closeModal}>&times;</span>
+                        <div>
+                            ?مطمئن هستید می خواهید خارج شوید
+                        </div>
+                        <div className="kform__row" style={{padding: 20}}>
+                            <button className="kform__btn kform__btn--success" style={{width: 150}}
+                                    onClick={closeModal}>خیر
+                            </button>
+                            <button className="kform__btn kform__btn--danger" style={{width: 150}} onClick={() => {
+                                logout()
+                                closeModal()
+                            }}>بلی
+                            </button>
+                        </div>
+                    </div>
+                </div>
             </nav>
         );
     }

@@ -17,25 +17,34 @@ const HomePage = (props: any) => {
     const [pageNumber, setPageNumber] = useState(1);
     const [pageCapacity, setPageCapacity] = useState(15);
     const [checkBoxes, setCheckBoxes]: any[] = useState([])
-    const [sortType, setSortType] = useState("best-selling") // best-selling, price-low, price-high
+    const [sortType, setSortType] = useState("soldNumber desc") // soldNumberDesc, price asc, price desc
     const [allCards, setAllCards]: any[] = useState([])
     const [catRefs, setCatRefs]: any[] = useState([])
-    const [sliderValue, setSliderValue] = React.useState<number[]>([20, 37]);
+    const [sliderValue, setSliderValue] = React.useState<number[]>([0, 1000]);
 
     const handleSliderChange = (event: any, newValue: number | number[]) => {
         setSliderValue(newValue as number[]);
     };
 
     const requestForProducts = () => {
-        let categories: string = ""
+        let _cats = []
         for (let i = 0; i < catRefs.length; i++) {
             if (catRefs[i].ref.current.value) {
-                categories += "&category=" + catRefs[i].name
+                _cats.push(catRefs[i].name)
             }
         }
         const [minPrice, maxPrice] = sliderValue
-        console.log(`minPrice: ${minPrice}, maxPrice: ${maxPrice}`)
-        axios.get("/api/products?sort=" + sortType + "&minPrice=" + minPrice.toString() + "&maxPrice=" + maxPrice.toString() + "&name=" + categories).then((response: any) => {
+        const params = {
+            sort: sortType,
+            minPrice: minPrice,
+            maxPrice: maxPrice,
+            name: ""
+        }
+        if (_cats.length !== 0) {
+            // @ts-ignore
+            params.category = _cats
+        }
+        axios.get("/api/products", {params: params}).then((response: any) => {
             const newProducts: any[] = []
             for (let i = 0; i < response.data.length; i++) {
                 const {Name, Category, StockNumber, Price}: any = response.data[i]
@@ -45,7 +54,26 @@ const HomePage = (props: any) => {
             setAllCards(() => newProducts)
         })
     }
+    const requestForCategories = () => {
+        console.log("requesting for categories")
+        axios.get("/api/categories").then((response: any) => {
+            newCheckBoxes = []
+            refs = []
+            for (let i = 0; i < response.data.length; i++) {
+                const _ref = createRef()
+                refs.push({
+                    name: response.data[i],
+                    ref: _ref
+                })
+                newCheckBoxes.push(<KcheckBox inputRef={_ref} onChange={requestForProducts}
+                                              className="categories__option"
+                                              id={i} name={response.data[i]}/>)
+            }
 
+            setCatRefs(() => refs)
+            setCheckBoxes(() => newCheckBoxes)
+        })
+    }
     const nextHeroImg = () => {
         const current_index = heroImages.indexOf(heroImg);
         if (current_index === heroImages.length - 1) {
@@ -131,32 +159,12 @@ const HomePage = (props: any) => {
             setTimerFlag(() => !timerFlag);
         }, 10000)
     }, [timerFlag])
-    // useEffect(() => {
-    // for (let i = 0; i < 100; i++)
-    //     allCards.push(<Card key={`card${i}`}/>)
-    // }, [])
     let newCheckBoxes: any[]
     let refs: any[]
     useEffect(() => {
-        axios.get("/api/categories").then((response: any) => {
-            newCheckBoxes = []
-            refs = []
-            for (let i = 0; i < response.data.length; i++) {
-                const _ref = createRef()
-                refs.push({
-                    name: response.data[i],
-                    ref: _ref
-                })
-                newCheckBoxes.push(<KcheckBox ref={_ref} onChange={requestForProducts} className="categories__option" id={i}
-                                              name={response.data[i]}/>)
-            }
-            setCatRefs(() => refs)
-            setCheckBoxes(() => newCheckBoxes)
-        })
+        requestForCategories()
+        setTimeout(requestForProducts, 0)
     }, [])
-    useEffect(() => {
-        requestForProducts()
-    }, [sliderValue.toString()])
     return (
         <section className="home-page">
             <section className="hero-header">
@@ -177,15 +185,15 @@ const HomePage = (props: any) => {
             <section id="products-section" className="products-section">
                 <div className="sort-box">
                     <span className="sort-msg">: مرتب سازی بر اساس</span>
-                    <button className={`sort-btn ${sortType === "best-selling" ? "sort-btn--chosen" : ""}`}
+                    <button className={`sort-btn ${sortType === "soldNumber desc" ? "sort-btn--chosen" : ""}`}
                             onClick={() => setSortType(() => "soldNumber desc")}>
                         بیشترین فروش
                     </button>
-                    <button className={`sort-btn ${sortType === "price-high" ? "sort-btn--chosen" : ""}`}
+                    <button className={`sort-btn ${sortType === "price desc" ? "sort-btn--chosen" : ""}`}
                             onClick={() => setSortType(() => "price desc")}>
                         گران ترین
                     </button>
-                    <button className={`sort-btn ${sortType === "price-low" ? "sort-btn--chosen" : ""}`}
+                    <button className={`sort-btn ${sortType === "price asc" ? "sort-btn--chosen" : ""}`}
                             onClick={() => setSortType(() => "price asc")}>
                         ارزان ترین
                     </button>

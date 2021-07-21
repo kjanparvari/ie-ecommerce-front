@@ -2,7 +2,7 @@
     display: none; /* Hidden by default */
     flex-direction: column;
     position: fixed; /* Stay in place */
-    z-index: 1; /* Sit on top */
+    z-index: 10; /* Sit on top */
     left: 0;
     top: 0;
     width: 100%; /* Full width */
@@ -50,6 +50,12 @@
 
 .kmodal__icon--danger {
     color: var(--danger);
+    font-size: 60px;
+    margin: 10% auto 2% auto;
+}
+
+.kmodal__icon--success {
+    color: var(--success);
     font-size: 60px;
     margin: 10% auto 2% auto;
 }

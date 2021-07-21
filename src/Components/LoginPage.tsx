@@ -11,7 +11,7 @@ import {Redirect} from 'react-router-dom'
 
 function LoginPage(props: any) {
     const [loggedInUser, setLoggedInUser, isAdmin, setIsAdmin] = useContext(LoginContext);
-    const modalRef = useRef(null);
+    const modalRef: any = useRef(null);
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
     const [modalMsg, setModalMsg] = useState("");

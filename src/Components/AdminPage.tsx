@@ -12,31 +12,23 @@ import {LoginContext} from "../App";
 import Kinput from "./Kinput";
 import axios, {AxiosResponse} from "axios";
 
-const sampleData = () => {
-    const data = []
-    for (let i = 0; i < 25; i++) {
-        data.push({
-            code: "Shop873",
-            product: "موس گیمینگ ریزر",
-            price: "تومان 10.000",
-            customer: "علی",
-            address: "تهران، تهران، امیرکبیر"
-        })
-    }
-    return data
-}
+
 const sampleHeaders = {
-    code: "کد پیگیری",
-    product: "کالا",
-    price: "قیمت پرداخت شده",
-    customer: "نام خریدار",
-    address: "آدرس ارسال شده"
+    product_name: "کالا",
+    sold_number: "تعداد فروش",
+    customer_email: "ایمیل خریدار",
+    customer_firstname: "نام خریدار",
+    customer_lastname: "نام خانوادگی خریدار",
+    customer_address: "آدرس ارسال شده",
+    amount: "قیمت پرداخت شده",
+    date: "تاریخ",
+    tracing_code: "کد پیگیری",
+    status: "وضعیت"
 }
 
 function AdminPage(props: any) {
     const [loggedInUser, setLoggedInUser, isAdmin, setIsAdmin] = useContext(LoginContext);
     const [tab, setTab] = useState("products"); // products, categories, receipt,
-    const [filteredReceipt, setFilteredReceipt] = useState(sampleData())
     const [categoriesList, setCategoriesList]: any = useState([]);
     const newProductNameRef: any = useRef(null);
     const newProductCategoryRef: any = useRef(null);
@@ -50,7 +42,9 @@ function AdminPage(props: any) {
     const editCategoryRef: any = useRef(null);
     const [modalContent, setModalContent]: any = useState(undefined)
     const [cards, setCards]: any = useState([])
-    const codeInputRef = useRef(null);
+    const [receipts, setReceipts]: any = useState([])
+    const [filteredReceipt, setFilteredReceipt] = useState([])
+    const codeInputRef: any = useRef(null);
     const modalRef: any = useRef(null);
     const openModal = () => {
         //@ts-ignore
@@ -143,9 +137,10 @@ function AdminPage(props: any) {
             closeModal()
         })
     }
-    const deleteCategoryHandler = (catName: string) => {
-        console.log("making delete product request")
-        axios.post('/api/categories/delete', "", {
+    const deleteCategoryHandler = (event: any, catName: string) => {
+        console.log("making delete category request", catName)
+        event.preventDefault()
+        axios.post('/api/admin/categories/delete', "", {
             params: {
                 name: catName
             }
@@ -158,11 +153,48 @@ function AdminPage(props: any) {
             closeModal()
         })
     }
+    const addCategoryHandler = () => {
+        const _catName = newCategoryRef.current.value
+        console.log("making add category request")
+        axios.post('/api/admin/categories/add', "", {
+            params: {
+                name: _catName
+            }
+        }).then((response: AxiosResponse) => {
+            console.log(response)
+            requestForCategories()
+            newCategoryRef.current.value = ""
+            closeModal()
+        }).catch((response) => {
+            console.log(response)
+            closeModal()
+        })
+    }
+    const editCategoryHandler = (oldCatName: string) => {
+        const _newCatName = editCategoryRef.current.value
+        console.log("making edit category request")
+        console.log("old: ", oldCatName, "new: ", _newCatName)
+        axios.post('/api/admin/categories/modify', "", {
+            params: {
+                oldName: oldCatName,
+                newName: _newCatName
+            }
+        }).then((response: AxiosResponse) => {
+            console.log(response)
+            requestForCategories()
+            newCategoryRef.current.value = ""
+            closeModal()
+        }).catch((response) => {
+            console.log(response)
+            closeModal()
+        })
+    }
     useEffect(() => {
         requestForCategories()
         requestForProducts()
+        requestForReceipts()
     }, [])
-    const addProductModal = () => <div className="kmodal__content kform">
+    const addProductModal = () => <div className="kmodal__content">
         <span className="kmodal__close-btn" onClick={closeModal}>&times;</span>
         <div className="kform">
             <div className="kform__row">
@@ -244,8 +276,39 @@ function AdminPage(props: any) {
 
         </div>
     }
+    const addCategoryModal = () => {
+        return <div className="kmodal__content">
+            <span className="kmodal__close-btn" onClick={closeModal}>&times;</span>
+            <div className="kform">
+                <div className="kform__row">
+                    <Kinput label="دسته بندی" type="text" error={""} valid={0}
+                            inputRef={newCategoryRef}
+                            login/>
+                </div>
+            </div>
+            <button className="kform__btn" style={{marginTop: 10, width: 100}} onClick={addCategoryHandler}>افزودن
+            </button>
+        </div>
 
-
+    }
+    const editCategoryModal = (catName: string) => {
+        setTimeout(() => {
+            editCategoryRef.current.value = catName
+        }, 0)
+        return <div className="kmodal__content">
+            <span className="kmodal__close-btn" onClick={closeModal}>&times;</span>
+            <div className="kform">
+                <div className="kform__row">
+                    <Kinput label="دسته بندی" type="text" error={""} valid={0}
+                            inputRef={editCategoryRef}
+                            login/>
+                </div>
+            </div>
+            <button className="kform__btn" style={{marginTop: 10, width: 100}}
+                    onClick={() => editCategoryHandler(catName)}>ویرایش
+            </button>
+        </div>
+    }
     const requestForProducts = () => {
         axios.get('/api/products', {
             params: {
@@ -277,17 +340,31 @@ function AdminPage(props: any) {
             closeModal()
         })
     }
-
+    const requestForReceipts = () => {
+        axios.get('/api/admin/receipt',).then((response: AxiosResponse) => {
+            if (response.status === 200) {
+                console.log("requesting for receipts")
+                console.log(response.data)
+                setReceipts(() => response.data)
+            }
+        }).catch((response) => {
+            console.log(response.data)
+            closeModal()
+        })
+    }
     const filterData = () => {
-        // @ts-ignore
-        if (codeInputRef.current === null || codeInputRef.current.value === "")
-            setFilteredReceipt(() => sampleData())
-        const newData = sampleData().filter((value: any, index: number) => {
-            // @ts-ignore
-            return value.code.includes(codeInputRef.current.value);
+        if (codeInputRef.current === null || codeInputRef.current.value === ""){
+            setFilteredReceipt(() => receipts)
+            return;
+        }
+        const newData = receipts.filter((value: any, index: number) => {
+            return value["tracing_code"].includes(codeInputRef.current.value);
         });
         setFilteredReceipt(() => newData);
     }
+    useEffect(() => {
+        filterData()
+    }, [receipts])
     const requestForCategories = () => {
         axios.get('/api/categories').then((response: AxiosResponse) => {
             if (response.status === 200) {
@@ -307,11 +384,12 @@ function AdminPage(props: any) {
     const makeCategories = () => {
         const catOpCell = (catName: string) => <div>
             <button className="admin-page__cat__btn admin-page__cat__edit" onClick={() => {
-
+                setModalContent(() => editCategoryModal(catName))
+                openModal()
             }}>ویرایش
             </button>
-            <button className="admin-page__cat__btn admin-page__cat__remove" onClick={() => {
-                deleteCategoryHandler(catName)
+            <button className="admin-page__cat__btn admin-page__cat__remove" onClick={(event) => {
+                deleteCategoryHandler(event, catName)
             }}>حذف
             </button>
         </div>
@@ -374,7 +452,12 @@ function AdminPage(props: any) {
 
                     : tab === "categories" ?
                         <div>
-                            <button className="admin-page__cat__add">افزودن دسته بندی جدید</button>
+                            <button className="admin-page__cat__add" onClick={() => {
+                                setModalContent(() => addCategoryModal())
+                                openModal()
+                            }
+                            }>افزودن دسته بندی جدید
+                            </button>
                             <Ktable data={makeCategories()} headers={{name: "نام دسته بندی", operation: "عملیات"}}/>
                         </div>
                         : ""

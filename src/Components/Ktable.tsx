@@ -45,12 +45,12 @@ function Ktable({data, headers}: any) {
                     </TableHead>
                     <TableBody>
                         {data.map((row: any) => (
-                            <TableRow key={row.code} onClick={() => alert(JSON.stringify(row))}>
+                            <TableRow key={row["tracing_code"]}/* onClick={() => alert(JSON.stringify(row))}*/>
                                 {
                                     Object.keys(row).reverse().map((key: string) => {
                                         // @ts-ignore
                                         const cellValue = row[key]
-                                        return <TableCell align="right" className={classes.cell}>{cellValue}</TableCell>
+                                        return <TableCell align="right"  className={classes.cell}>{cellValue}</TableCell>
                                     })
                                 }
                             </TableRow>
