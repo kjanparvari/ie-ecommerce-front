@@ -34,7 +34,7 @@ function Ktable({data, headers}: any) {
                 <Table className={classes.table} stickyHeader aria-label="simple table">
                     <TableHead>
                         <TableRow>
-                            {Object.keys(headers).reverse().map((headerKey: string) => {
+                            {Object.keys(headers).sort().map((headerKey: string) => {
                                 // @ts-ignore
                                 const cellValue = headers[headerKey]
                                 return <TableCell key={`header:${headerKey}`} className={classes.cell}
@@ -47,7 +47,7 @@ function Ktable({data, headers}: any) {
                         {data.map((row: any) => (
                             <TableRow key={row["tracing_code"]}/* onClick={() => alert(JSON.stringify(row))}*/>
                                 {
-                                    Object.keys(row).reverse().map((key: string) => {
+                                    Object.keys(row).sort().map((key: string) => {
                                         // @ts-ignore
                                         const cellValue = row[key]
                                         return <TableCell align="right"  className={classes.cell}>{cellValue}</TableCell>

@@ -18,6 +18,8 @@ const HomePage = (props: any) => {
     const [pageCapacity, setPageCapacity] = useState(15);
     const [checkBoxes, setCheckBoxes]: any[] = useState([])
     const [sortType, setSortType] = useState("sold_number desc") // sold_numberDesc, price asc, price desc
+    const searchInputRef: any = useRef(null);
+    const [searchedName, setSearchedName] = useState("")
     const [allCards, setAllCards]: any[] = useState([])
     const [showingCards, setShowingCards]: any[] = useState([])
     const [catRefs, setCatRefs]: any[] = useState([])
@@ -48,7 +50,7 @@ const HomePage = (props: any) => {
         params.append("sort", sortType);
         params.append("maxPrice", maxPrice.toString());
         params.append("minPrice", minPrice.toString());
-        params.append("name", "");
+        params.append("name", searchedName);
         // let _cats: any[] = []
         console.log("requesting for products")
         // console.log(catRefs)
@@ -231,15 +233,18 @@ const HomePage = (props: any) => {
             closeModal()
         })
     }
-
     return (
         <section className="home-page">
             <section className="hero-header">
                 <div className="hero-header__title">
                     ... در محصولات سایت جست و جو کنید
                 </div>
-                <input type="text" placeholder="...نام محصول خود را وارد کنید" className="hero-header__search-box"/>
-                <button onClick={() => setReqFlag(true)} className="hero-header__search-btn">
+                <input type="text" ref={searchInputRef} placeholder="...نام محصول خود را وارد کنید"
+                       className="hero-header__search-box"/>
+                <button onClick={() => {
+                    setSearchedName(() => searchInputRef.current.value)
+                    setReqFlag(true)
+                }} className="hero-header__search-btn">
                     جست و جو کنید
                 </button>
                 <div className="hero-header__slider-btn">
@@ -253,15 +258,24 @@ const HomePage = (props: any) => {
                 <div className="sort-box">
                     <span className="sort-msg">: مرتب سازی بر اساس</span>
                     <button className={`sort-btn ${sortType === "sold_number desc" ? "sort-btn--chosen" : ""}`}
-                            onClick={() => setSortType(() => "sold_number desc")}>
+                            onClick={() => {
+                                setSortType(() => "sold_number desc")
+                                setReqFlag(true)
+                            }}>
                         بیشترین فروش
                     </button>
                     <button className={`sort-btn ${sortType === "price desc" ? "sort-btn--chosen" : ""}`}
-                            onClick={() => setSortType(() => "price desc")}>
+                            onClick={() => {
+                                setSortType(() => "price desc")
+                                setReqFlag(true)
+                            }}>
                         گران ترین
                     </button>
                     <button className={`sort-btn ${sortType === "price asc" ? "sort-btn--chosen" : ""}`}
-                            onClick={() => setSortType(() => "price asc")}>
+                            onClick={() => {
+                                setSortType(() => "price asc")
+                                setReqFlag(true)
+                            }}>
                         ارزان ترین
                     </button>
                 </div>
