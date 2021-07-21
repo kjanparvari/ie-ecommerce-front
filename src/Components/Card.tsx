@@ -2,7 +2,7 @@ import React from 'react';
 import bag from '../img/bag.png'
 import '../styles/Card.css'
 
-function Card({admin, name, category, stock, editHandler, soldNumber, price}: any) {
+function Card({admin, name, category, stock, buyHandler, editHandler, soldNumber, price}: any) {
     return (
         <div className="card">
             {
@@ -25,7 +25,18 @@ function Card({admin, name, category, stock, editHandler, soldNumber, price}: an
                             category: category
                         })}>ویرایش محصول</button>
                         :
-                        <button className="card__purchase-btn">خرید محصول</button>
+                        stock === 0 ?
+                            <button className="card__purchase-btn  card__purchase-btn--disabled"
+                                    disabled>ناموجود</button>
+                            :
+                            <button className="card__purchase-btn"
+                                    onClick={() => buyHandler({
+                                        name: name,
+                                        price: price,
+                                        stock: stock,
+                                        soldNumber: soldNumber,
+                                        category: category
+                                    })}>خرید محصول</button>
                 }
 
                 <div className="card__price">

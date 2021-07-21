@@ -8,33 +8,39 @@ import Ktable from "./Ktable";
 import {Redirect} from "react-router-dom";
 import {LoginContext} from "../App";
 import {log} from "util";
+import axios, {AxiosResponse} from "axios";
+import {AiFillCheckCircle, AiFillCloseCircle} from "react-icons/ai";
 
-const sampleData = () => {
-    const data = []
-    for (let i = 0; i < 25; i++) {
-        data.push({
-            code: "Shop873",
-            product: "موس گیمینگ ریزر",
-            price: "تومان 10.000",
-            address: "تهران، تهران، امیرکبیر"
-        })
-    }
-    return data
-}
+
 const sampleHeaders = {
-    code: "کد پیگیری",
-    product: "کالا",
-    price: "قیمت پرداخت شده",
-    address: "آدرس ارسال شده"
+    tracing_code: "کد پیگیری",
+    product_name: "کالا",
+    sold_number: "تعداد فروش",
+    customer_email: "ایمیل خریدار",
+    customer_firstname: "نام خریدار",
+    customer_lastname: "نام خانوادگی خریدار",
+    customer_address: "آدرس ارسال شده",
+    amount: "قیمت پرداخت شده",
+    date: "تاریخ",
+    status: "وضعیت"
 }
+
 
 function UserPage(props: any) {
     const [loggedInUser, setLoggedInUser, isAdmin, setIsAdmin] = useContext(LoginContext);
-    const [tab, setTab] = useState("receipt"); // profile, receipt
-    const name = "کامیار"
-    const price = "10.000"
+    const [tab, setTab] = useState("profile"); // profile, receipt
+    const [userInfo, setUserInfo]: any = useState(loggedInUser)
+    const emailRef: any = useRef(null)
+    const passwordRef: any = useRef(null)
+    const firstnameRef: any = useRef(null)
+    const lastnameRef: any = useRef(null)
+    const addressRef: any = useRef(null)
+    const newBalanceRef: any = useRef(null)
     const modalRef = useRef(null);
-    let validation: any = {}
+    const [modalMsg, setModalMsg] = useState("موجودی اضافه شد");
+    const [modalIcon, setModalIcon] = useState(true);
+    const [receipts, setReceipts]: any = useState([])
+    const [modalContent, setModalContent]: any = useState("")
     const openModal = () => {
         //@ts-ignore
         modalRef.current.style.display = "flex"
@@ -43,16 +49,97 @@ function UserPage(props: any) {
         //@ts-ignore
         modalRef.current.style.display = "none"
     }
-    const submitHandler = () => {
-        const firstname = validation.firstname();
-        const lastname = validation.lastname();
-        const email = validation.email();
-        const password = validation.password();
-        const address = validation.address();
-        if (firstname && lastname && email && password && address)
-            openModal();
+    const editResultModal = () => <div className="kmodal__content">
+        <span className="kmodal__close-btn" onClick={closeModal}>&times;</span>
+        {
+            modalIcon ? <AiFillCheckCircle className="kmodal__icon--success"/> :
+                <AiFillCloseCircle className="kmodal__icon--danger"/>
+        }
+        <p className="kmodal__msg">{modalMsg}</p>
+    </div>
+    const editUserHandler = () => {
+        axios.post("/api/user/modify", "", {
+            params: {
+                firstname: firstnameRef.current.value,
+                lastname: lastnameRef.current.value,
+                address: addressRef.current.value,
+                balance: userInfo.balance,
+                password: passwordRef.current.value
+            }
+        }).then((response: AxiosResponse) => {
+            if (response.status === 200) {
+                setModalIcon(true)
+                setModalMsg(response.data)
+                setModalContent(editResultModal())
+                requestForInfo()
+            }
+
+        }).catch((response: any) => {
+            setModalContent(editResultModal())
+            setModalIcon(false)
+            setModalMsg(response.data)
+        })
+    }
+    const addBalanceHandler = () => {
+        axios.post("/api/user/riseBalance", "", {
+            params: {
+                amount: newBalanceRef.current.value
+            }
+        }).then((response: AxiosResponse) => {
+            if (response.status === 200) {
+                setModalIcon(true)
+                setModalMsg(response.data)
+                setModalContent(editResultModal())
+                requestForInfo()
+            }
+
+        }).catch((response: any) => {
+            setModalContent(editResultModal())
+            setModalIcon(false)
+            setModalMsg(response.data)
+        })
+    }
+    // useEffect(()=> {
+    //     setModalContent(editResultModal())
+    // }, [modalMsg, modalMsg])
+    const addBalanceModal = () => {
+        return <div className="kmodal__content">
+            <div className="kform__row">
+                <Kinput label="اعتبار" type="number" error={""} valid={0}
+                        inputRef={newBalanceRef}
+                        login/>
+            </div>
+            <button className="kform__btn kform__btn--success" style={{marginTop: 10, width: 150}}
+                    onClick={addBalanceHandler}>
+                افزایش
+            </button>
+        </div>
+    }
+    const requestForInfo = () => {
+        axios.get("/api/user").then((response: AxiosResponse) => {
+            if (response.status === 200) {
+                loggedInUser.firstname = firstnameRef.current.value = response.data.firstname
+                loggedInUser.lastname = lastnameRef.current.value = response.data.lastname
+                loggedInUser.email = emailRef.current.value = response.data.email
+                loggedInUser.address = addressRef.current.value = response.data.address
+                loggedInUser.balance = response.data.balance
+                passwordRef.current.value = ""
+                setUserInfo(response.data)
+            }
+        })
+    }
+    const requestForReceipts = () => {
+        axios.get("/api/receipt").then((response: AxiosResponse) => {
+            if (response.status === 200) {
+                console.log("user page getting receipts")
+                console.log(response.data)
+                setReceipts(() => response.data)
+            }
+        })
     }
     useEffect(() => {
+        requestForReceipts()
+        requestForInfo()
         window.onclick = (event: MouseEvent) => {
             if (event.target == modalRef.current)
                 closeModal();
@@ -63,9 +150,13 @@ function UserPage(props: any) {
     return (
         <section className="user-page">
             <div className="user-page__title">
-                <div className="user-page__title__welcome">{`  ${loggedInUser.firstname} عزیز خوش آمدید`}</div>
-                <div className="user-page__title__balance-msg">{`موجودی حساب شما: ${loggedInUser.balance}`}</div>
-                <button className="user-page__title__balance-btn">افزایش موجودی</button>
+                <div className="user-page__title__welcome">{`  ${userInfo.firstname} عزیز خوش آمدید`}</div>
+                <div className="user-page__title__balance-msg">{`موجودی حساب شما: ${userInfo.balance}`}</div>
+                <button className="user-page__title__balance-btn" onClick={() => {
+                    setModalContent(() => addBalanceModal())
+                    openModal()
+                }}>افزایش موجودی
+                </button>
             </div>
             <div className="user-page__tab ktab">
                 <div className={`ktab__icon ktab__icon--right ${tab === "profile" ? "ktab--chosen" : ""}`}
@@ -82,23 +173,26 @@ function UserPage(props: any) {
                     <div className="user-page__profile">
                         <form className="login-page__form kform">
                             <div className="kform__row">
-                                <Kinput label="نام خانوادگی" type="lastname" validation={validation} left/>
-                                <Kinput label="نام" type="firstname" validation={validation} right/>
+                                <Kinput label="نام خانوادگی" inputRef={lastnameRef} type="lastname" left/>
+                                <Kinput label="نام" inputRef={firstnameRef} type="firstname" right/>
                             </div>
                             <div className="kform__row" style={{marginTop: 10}}>
-                                <Kinput label="رمز عبور" type="password" validation={validation} left/>
-                                <Kinput label="ایمیل" type="email" validation={validation} right/>
+                                <Kinput label="رمز عبور" inputRef={passwordRef} type="password" left/>
+                                <Kinput label="ایمیل" inputRef={emailRef} disabled type="email" right/>
                             </div>
                             <div className="kform__row" style={{marginTop: 10}}>
-                                <Kinput label="آدرس" type="address" validation={validation} big/>
+                                <Kinput label="آدرس" inputRef={addressRef} type="address" big/>
                             </div>
                         </form>
-                        <button className="kform__btn" onClick={submitHandler}>ویرایش اطلاعات</button>
+                        <button className="kform__btn" onClick={editUserHandler}>ویرایش اطلاعات</button>
                     </div>
                     : tab === "receipt" ?
-                    <Ktable data={sampleData()} headers={sampleHeaders}/>
+                    <Ktable data={receipts} headers={sampleHeaders}/>
                     : ""
             }
+            <div className="kmodal" ref={modalRef}>
+                {modalContent}
+            </div>
         </section>
     );
 }

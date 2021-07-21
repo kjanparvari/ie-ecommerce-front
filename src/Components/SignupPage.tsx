@@ -23,7 +23,6 @@ function SignupPage(props: any) {
     const firstnameFirstUpdate = useRef(true)
     const lastnameFirstUpdate = useRef(true)
     const addressFirstUpdate = useRef(true)
-    let validation: any = {}
     const openModal = () => {
         //@ts-ignore
         modalRef.current.style.display = "flex"

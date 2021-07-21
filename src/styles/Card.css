@@ -64,6 +64,10 @@
     cursor: pointer;
 }
 
+.card__purchase-btn--disabled {
+    background-color: var(--secondary);
+}
+
 .card__price {
     margin: auto 5px auto auto;
     display: flex;

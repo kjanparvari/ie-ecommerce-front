@@ -14,6 +14,7 @@ import axios, {AxiosResponse} from "axios";
 
 
 const sampleHeaders = {
+    tracing_code: "کد پیگیری",
     product_name: "کالا",
     sold_number: "تعداد فروش",
     customer_email: "ایمیل خریدار",
@@ -22,7 +23,6 @@ const sampleHeaders = {
     customer_address: "آدرس ارسال شده",
     amount: "قیمت پرداخت شده",
     date: "تاریخ",
-    tracing_code: "کد پیگیری",
     status: "وضعیت"
 }
 

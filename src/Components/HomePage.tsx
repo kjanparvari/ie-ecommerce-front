@@ -7,8 +7,8 @@ import smartphonesImg from "../img/hero_header/smartphones.png"
 import Card from "./Card";
 import {AiFillLeftCircle, AiFillRightCircle} from 'react-icons/ai'
 import Slider from '@material-ui/core/Slider';
-import {log} from "util";
 import axios, {AxiosError} from 'axios'
+import Kinput from "./Kinput";
 
 const heroImages = [clockImg, ps5Img, smartphonesImg]
 const HomePage = (props: any) => {
@@ -17,40 +17,74 @@ const HomePage = (props: any) => {
     const [pageNumber, setPageNumber] = useState(1);
     const [pageCapacity, setPageCapacity] = useState(15);
     const [checkBoxes, setCheckBoxes]: any[] = useState([])
-    const [sortType, setSortType] = useState("soldNumber desc") // soldNumberDesc, price asc, price desc
+    const [sortType, setSortType] = useState("sold_number desc") // sold_numberDesc, price asc, price desc
     const [allCards, setAllCards]: any[] = useState([])
+    const [showingCards, setShowingCards]: any[] = useState([])
     const [catRefs, setCatRefs]: any[] = useState([])
     const [sliderValue, setSliderValue] = React.useState<number[]>([0, 1000]);
-
+    const [reqFlag, setReqFlag] = useState(true)
+    const modalRef: any = useRef(null);
+    const buyAmountRef: any = useRef(null);
+    const [modalContent, setModalContent]: any = useState("")
+    const openModal = () => {
+        //@ts-ignore
+        modalRef.current.style.display = "flex"
+    }
+    const closeModal = () => {
+        //@ts-ignore
+        modalRef.current.style.display = "none"
+    }
     const handleSliderChange = (event: any, newValue: number | number[]) => {
         setSliderValue(newValue as number[]);
+        setReqFlag(true)
     };
-
+    useEffect(() => {
+        console.log("catrefs change")
+        console.log(catRefs)
+    }, [catRefs.length])
     const requestForProducts = () => {
-        let _cats = []
+        const [minPrice, maxPrice] = sliderValue
+        const params = new URLSearchParams();
+        params.append("sort", sortType);
+        params.append("maxPrice", maxPrice.toString());
+        params.append("minPrice", minPrice.toString());
+        params.append("name", "");
+        // let _cats: any[] = []
+        console.log("requesting for products")
+        // console.log(catRefs)
         for (let i = 0; i < catRefs.length; i++) {
-            if (catRefs[i].ref.current.value) {
-                _cats.push(catRefs[i].name)
+            if (catRefs[i].inputRef.current.checked) {
+                // console.log("cat", catRefs[i].name, catRefs[i].inputRef.current.checked)
+                // _cats.push(catRefs[i].name)
+                params.append("category", catRefs[i].name)
             }
         }
-        const [minPrice, maxPrice] = sliderValue
-        const params = {
-            sort: sortType,
-            minPrice: minPrice,
-            maxPrice: maxPrice,
-            name: ""
-        }
-        if (_cats.length !== 0) {
-            // @ts-ignore
-            params.category = _cats
-        }
+        console.log("param: ")
+        console.log(params)
         axios.get("/api/products", {params: params}).then((response: any) => {
             const newProducts: any[] = []
             for (let i = 0; i < response.data.length; i++) {
-                const {Name, Category, StockNumber, Price}: any = response.data[i]
-                newProducts.push(<Card key={`card${i}`} name={Name} category={Category} stockNumber={StockNumber}
-                                       price={Price}/>)
+                const {name, category, stock, sold_number, price}: any = response.data[i]
+                newProducts.push(<Card key={`card${i}`} name={name} category={category} stockNumber={stock}
+                                       price={price} buyHandler={(product: any) => {
+                    setModalContent(() => <div className="kmodal__content">
+                        <span className="kmodal__close-btn" onClick={closeModal}>&times;</span>
+                        <div className="kform">
+                            <div className="kform__row">
+                                <Kinput label="تعداد" type="number" error={""} valid={0}
+                                        inputRef={buyAmountRef}
+                                        login/>
+                            </div>
+                        </div>
+                        <button className="kform__btn kform__btn--success" style={{marginTop: 10, width: 100}}
+                                onClick={() => buyProductHandler(product)}>خرید
+                        </button>
+                    </div>)
+                    setTimeout(openModal, 0);
+                }}/>)
             }
+            console.log("new products:")
+            console.log(newProducts)
             setAllCards(() => newProducts)
         })
     }
@@ -63,13 +97,14 @@ const HomePage = (props: any) => {
                 const _ref = createRef()
                 refs.push({
                     name: response.data[i],
-                    ref: _ref
+                    inputRef: _ref
                 })
-                newCheckBoxes.push(<KcheckBox inputRef={_ref} onChange={requestForProducts}
+                newCheckBoxes.push(<KcheckBox inputRef={_ref} onChange={() => setReqFlag(true)} key={i}
                                               className="categories__option"
                                               id={i} name={response.data[i]}/>)
             }
-
+            console.log(refs.length)
+            console.log(newCheckBoxes.length)
             setCatRefs(() => refs)
             setCheckBoxes(() => newCheckBoxes)
         })
@@ -136,15 +171,6 @@ const HomePage = (props: any) => {
     const isFirstPage = () => {
         return pageNumber === 1;
     }
-    const generateShowingCards = () => {
-        const _start = (pageNumber - 1) * pageCapacity;
-        let _end: number;
-        if (isLastPage())
-            _end = allCards.length;
-        else
-            _end = _start + pageCapacity;
-        return allCards.slice(_start, _end);
-    }
     const nextPage = () => {
         if (!isLastPage())
             setPageNumber((prevState => prevState + 1))
@@ -162,9 +188,50 @@ const HomePage = (props: any) => {
     let newCheckBoxes: any[]
     let refs: any[]
     useEffect(() => {
+        window.onclick = (event: MouseEvent) => {
+            if (event.target == modalRef.current)
+                closeModal();
+        }
         requestForCategories()
-        setTimeout(requestForProducts, 0)
     }, [])
+    useEffect(() => {
+        if (reqFlag) {
+            console.log("req flag is on")
+            requestForProducts()
+            setPageNumber(1);
+            setReqFlag(false)
+        }
+    }, [reqFlag])
+    useEffect(() => {
+        console.log("changing showing cards")
+        const _start = (pageNumber - 1) * pageCapacity;
+        let _end: number;
+        if (isLastPage())
+            _end = allCards.length;
+        else
+            _end = _start + pageCapacity;
+        setShowingCards(() => allCards.slice(_start, _end));
+    }, [JSON.stringify(allCards), pageCapacity, pageNumber]);
+    // useEffect(() => {
+    //     console.log("sort type changed")
+    //     console.log(sortType)
+    //     setReqFlag(true)
+    // }, [sortType])
+    const buyProductHandler = (product: any) => {
+        axios.get("/api/buy", {
+            params: {
+                name: product.name,
+                number: buyAmountRef.current.value
+            }
+        }).then((response: any) => {
+            setReqFlag(true)
+            closeModal()
+        }).catch((response: any) => {
+            console.log(response)
+            closeModal()
+        })
+    }
+
     return (
         <section className="home-page">
             <section className="hero-header">
@@ -172,7 +239,7 @@ const HomePage = (props: any) => {
                     ... در محصولات سایت جست و جو کنید
                 </div>
                 <input type="text" placeholder="...نام محصول خود را وارد کنید" className="hero-header__search-box"/>
-                <button onClick={() => requestForProducts()} className="hero-header__search-btn">
+                <button onClick={() => setReqFlag(true)} className="hero-header__search-btn">
                     جست و جو کنید
                 </button>
                 <div className="hero-header__slider-btn">
@@ -185,8 +252,8 @@ const HomePage = (props: any) => {
             <section id="products-section" className="products-section">
                 <div className="sort-box">
                     <span className="sort-msg">: مرتب سازی بر اساس</span>
-                    <button className={`sort-btn ${sortType === "soldNumber desc" ? "sort-btn--chosen" : ""}`}
-                            onClick={() => setSortType(() => "soldNumber desc")}>
+                    <button className={`sort-btn ${sortType === "sold_number desc" ? "sort-btn--chosen" : ""}`}
+                            onClick={() => setSortType(() => "sold_number desc")}>
                         بیشترین فروش
                     </button>
                     <button className={`sort-btn ${sortType === "price desc" ? "sort-btn--chosen" : ""}`}
@@ -232,7 +299,7 @@ const HomePage = (props: any) => {
 
                     </div>
                     <div className="products">
-                        {generateShowingCards()}
+                        {showingCards}
                     </div>
 
                 </div>
@@ -267,6 +334,9 @@ const HomePage = (props: any) => {
                 </div>
 
             </section>
+            <div className="kmodal" ref={modalRef}>
+                {modalContent}
+            </div>
         </section>
     );
 }
