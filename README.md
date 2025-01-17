@@ -20,4 +20,4 @@ This repository contains the client-side implementation of the eCommerce platfor
 This project is part of the **Internet Engineering course**. The backend repository can be found [here](https://github.com/kjanparvari/ie-ecommerce-back).  
 
 ## License  
-This project is licensed under the AUT License.
+This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.  
