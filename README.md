@@ -17,7 +17,7 @@ The frontend of a simple eCommerce website built with **React** and **TypeScript
 This repository contains the client-side implementation of the eCommerce platform, focusing on best practices in front-end development.  
 
 ## Acknowledgements  
-This project is part of the **Internet Engineering course**. The backend repository can be found [here](https://github.com/kjanparvari/ie-ecommerce-bac).  
+This project is part of the **Internet Engineering course**. The backend repository can be found [here](https://github.com/kjanparvari/ie-ecommerce-back).  
 
 ## License  
 This project is licensed under the AUT License.
